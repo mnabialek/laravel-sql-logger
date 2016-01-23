@@ -1,0 +1,21 @@
+{
+  "name": "mnabialek/laravel-sql-logger",
+  "description": "Log SQL queries in Laravel/Lumen framework",
+  "keywords": ["laravel", "sql", "log", "logger", "lumen"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marcin Nabiałek",
+      "email": "gitre@nabialek.org"
+    }
+  ],
+  "require": {
+    "illuminate/support": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mnabialek\\LaravelSqlLogger\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
