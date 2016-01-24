@@ -12,10 +12,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         // files to publish
-        $this->publishes([
-            realpath(__DIR__ .
-                '/../../config/sql_logger.php') => config_path('sql_logger.php'),
-        ]);
+        $this->publishes($this->getPublished());
 
         // get settings
         $logStatus = $this->getSqlLoggingStatus();
@@ -49,6 +46,22 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 $logger->log($query, $bindings, $time);
             });
         }
+    }
+
+    /**
+     * Get files to be published
+     *
+     * @return array
+     */
+    protected function getPublished()
+    {
+        return [
+            realpath(__DIR__ .
+                '/../../config/sql_logger.php') =>
+                (function_exists('config_path') ?
+                    config_path('sql_logger.php') :
+                    base_path('config/sql_logger.php')),
+        ];
     }
 
     /**
@@ -103,7 +116,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function getLogDirectory()
     {
         return $this->app->config->get('sql_logger.directory',
-            env('SQL_LOG_DIRECTORY', 'logs' . DIRECTORY_SEPARATOR . 'sql'));
+            storage_path(env('SQL_LOG_DIRECTORY',
+                'logs' . DIRECTORY_SEPARATOR . 'sql')));
     }
 
     /**

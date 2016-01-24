@@ -175,7 +175,7 @@ class SqlLogger
     protected function getSqlQuery($query, $bindings, $execTime)
     {
         //for Laravel 5.2 $query is object and it holds the data
-        if (version_compare($this->app->version(), '5.2.0', '>=')) {
+        if (version_compare($this->getVersion(), '5.2.0', '>=')) {
             $bindings = $query->bindings;
             $execTime = $query->time;
             $query = $query->sql;
@@ -195,5 +195,26 @@ class SqlLogger
         $fullSql = vsprintf($query, $bindings);
 
         return [$fullSql, $execTime];
+    }
+
+    /**
+     * Get framework version
+     *
+     * @return string
+     */
+    protected function getVersion()
+    {
+        $version = $this->app->version();
+        
+        // for Lumen we need to do extra things to get Lumen version
+        if (mb_strpos($version, 'Lumen') !== false) {
+            $p = mb_strpos($version, '(');
+            $p2 = mb_strpos($version, ')');
+            if ($p !== false && $p2 !== false) {
+                $version = trim(mb_substr($version, $p + 1, $p2 - $p - 1));
+            }
+        }
+
+        return $version;
     }
 }
