@@ -184,9 +184,9 @@ class SqlLogger
         // need to format bindings properly
         foreach ($bindings as $i => $binding) {
             if ($binding instanceof \DateTime) {
-                $bindings[$i] = "'" . $binding->format('Y-m-d H:i:s') . "'";
+                $bindings[$i] = $binding->format('Y-m-d H:i:s');
             } elseif (is_string($binding)) {
-                $bindings[$i] = "'" . str_replace("'", "\\'", $binding) . "'";
+                $bindings[$i] = str_replace("'", "\\'", $binding);
             }
         }
 

@@ -7,7 +7,7 @@ when developing your application to verify your queries, they amount and number.
 
 1. Run
    ```php   
-       composer require mnnabialek/laravel-sql-logger
+       composer require mnabialek/laravel-sql-logger
    ```     
    in console to install this module
 
