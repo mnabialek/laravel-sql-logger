@@ -54,6 +54,13 @@ class SqlLogger
     protected $convertToSeconds;
 
     /**
+     * Whether PHP_SAPI name should to added to log filename
+     *
+     * @var bool
+     */
+    protected $addPhpSapi;
+
+    /**
      * SqlLogger constructor.
      *
      * @param $app
@@ -63,6 +70,7 @@ class SqlLogger
      * @param $override
      * @param $directory
      * @param $convertToSeconds
+     * @param $addPhpSapi
      */
     public function __construct(
         $app,
@@ -71,7 +79,8 @@ class SqlLogger
         $slowLogTime,
         $override,
         $directory,
-        $convertToSeconds
+        $convertToSeconds,
+        $addPhpSapi
     ) {
         $this->app = $app;
         $this->logStatus = $logStatus;
@@ -80,6 +89,7 @@ class SqlLogger
         $this->override = $override;
         $this->directory = rtrim($directory, '\\/');
         $this->convertToSeconds = $convertToSeconds;
+        $this->addPhpSapi = $addPhpSapi;
     }
 
     /**
@@ -121,13 +131,15 @@ class SqlLogger
     {
         // save normal query to file if enabled
         if ($this->logStatus) {
-            $this->saveLog($data, date('Y-m-d') . '-log.sql',
+            $this->saveLog($data, date('Y-m-d') . 
+                ($this->addPhpSapi ? '-' . php_sapi_name() : '') . '-log.sql',
                 ($queryNr == 1 && (bool)$this->override));
         }
 
         // save slow query to file if enabled
         if ($this->slowLogStatus && $execTime >= $this->slowLogTime) {
-            $this->saveLog($data, date('Y-m-d') . '-slow-log.sql');
+            $this->saveLog($data, date('Y-m-d') .
+                ($this->addPhpSapi ? '-' . php_sapi_name() : '') . '-slow-log.sql');
         }
     }
 

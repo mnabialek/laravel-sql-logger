@@ -36,4 +36,12 @@ return [
      * (by default it's in milliseconds)
      */
     'convert_to_seconds' => env('SQL_CONVERT_TIME_TO_SECONDS', false),
+
+    /**
+     * Whether PHP_SAPI name should to added to log filename.
+     * It is useful when you run artisan command doing some queries and you 
+     * want to log these queries to separate file
+     *
+     */
+    'add_php_sapi_to_filename' => env('SQL_ADD_PHP_SAPI', false),
 ];
