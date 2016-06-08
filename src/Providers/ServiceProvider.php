@@ -21,6 +21,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $override = $this->getOverrideStatus();
         $directory = $this->getLogDirectory();
         $convertToSeconds = $this->getConvertToSeconds();
+        $addPhpSapi = $this->getAddPhpSapi();
 
         // if any of logging type is enabled we will listen database to get all
         // executed queries
@@ -35,6 +36,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     $override,
                     $directory,
                     $convertToSeconds,
+                    $addPhpSapi,
                 ]);
 
             // listen to database queries
@@ -129,5 +131,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return (bool)$this->app->config->get('sql_logger.convert_to_seconds',
             env('SQL_CONVERT_TIME_TO_SECONDS', false));
+    }
+
+    /**
+     * Whether PHP_SAPI name should to added to log filename
+     *
+     * @return bool
+     */
+    protected function getAddPhpSapi()
+    {
+        return (bool)$this->app->config->get('sql_logger.add_php_sapi_to_filename',
+            env('SQL_ADD_PHP_SAPI', false));
     }
 }
