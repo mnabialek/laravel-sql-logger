@@ -38,6 +38,7 @@ when developing your application to verify whether your queries are valid and to
     SQL_LOG_OVERRIDE=false
     SQL_LOG_DIRECTORY=logs/sql
     SQL_CONVERT_TIME_TO_SECONDS=false
+    SQL_LOG_SEPARATE_ARTISAN=false
     ```
     
     and adjust values to your needs. If you have also `.env.sample` it's also recommended to add those entries also in `.env.sample` file just to make sure everyone know about those env variables. Be aware that `SQL_LOG_DIRECTORY` is directory inside storage directory. If you want you can change it editing `config/sql_logger.php` file  
@@ -65,6 +66,7 @@ when developing your application to verify whether your queries are valid and to
     SQL_LOG_OVERRIDE=false
     SQL_LOG_DIRECTORY=logs/sql
     SQL_CONVERT_TIME_TO_SECONDS=false
+    SQL_LOG_SEPARATE_ARTISAN=false
     ```
        
     and adjust values to your needs. If you have also `.env.sample` it's also recommended to add those entries also in `.env.sample` file just to make sure everyone know about those env variables. Be aware that `SQL_LOG_DIRECTORY` is directory inside storage directory. 
