@@ -7,6 +7,11 @@ return [
     'log_queries' => env('SQL_LOG_QUERIES', true),
 
     /**
+     * Whether artisan queries should be logged to separate files 
+     */
+    'log_console_to_separate_file' => env('SQL_LOG_SEPARATE_ARTISAN', false),
+
+    /**
      * Whether slow SQL queries should be logged (you can log all queries and
      * also slow queries in separate file or you might to want log only slow
      * queries)

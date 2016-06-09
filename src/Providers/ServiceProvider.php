@@ -21,6 +21,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $override = $this->getOverrideStatus();
         $directory = $this->getLogDirectory();
         $convertToSeconds = $this->getConvertToSeconds();
+        $separateConsoleLog = $this->getSeparateConsoleLogs();
 
         // if any of logging type is enabled we will listen database to get all
         // executed queries
@@ -35,6 +36,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     $override,
                     $directory,
                     $convertToSeconds,
+                    $separateConsoleLog,
                 ]);
 
             // listen to database queries
@@ -129,5 +131,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return (bool)$this->app->config->get('sql_logger.convert_to_seconds',
             env('SQL_CONVERT_TIME_TO_SECONDS', false));
+    }
+
+    /**
+     * Whether console queries should be logged into separate files
+     *
+     * @return bool
+     */
+    protected function getSeparateConsoleLogs()
+    {
+        return (bool)$this->app->config->get('sql_logger.log_console_to_separate_file',
+            env('SQL_SEPARATE_ARTISAN', false));
     }
 }
