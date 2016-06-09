@@ -54,6 +54,13 @@ class SqlLogger
     protected $convertToSeconds;
 
     /**
+     * Whether artisan queries should be saved into separate files
+     *
+     * @var bool
+     */
+    protected $separateConsoleLog;
+
+    /**
      * SqlLogger constructor.
      *
      * @param $app
@@ -63,6 +70,7 @@ class SqlLogger
      * @param $override
      * @param $directory
      * @param $convertToSeconds
+     * @param $separateConsoleLog
      */
     public function __construct(
         $app,
@@ -71,7 +79,8 @@ class SqlLogger
         $slowLogTime,
         $override,
         $directory,
-        $convertToSeconds
+        $convertToSeconds,
+        $separateConsoleLog
     ) {
         $this->app = $app;
         $this->logStatus = $logStatus;
@@ -80,6 +89,7 @@ class SqlLogger
         $this->override = $override;
         $this->directory = rtrim($directory, '\\/');
         $this->convertToSeconds = $convertToSeconds;
+        $this->separateConsoleLog = $separateConsoleLog;
     }
 
     /**
@@ -119,15 +129,19 @@ class SqlLogger
      */
     protected function save($data, $execTime, $queryNr)
     {
+        $filePrefix = ($this->separateConsoleLog &&
+        $this->app->runningInConsole()) ? '-artisan' : '';
+
         // save normal query to file if enabled
         if ($this->logStatus) {
-            $this->saveLog($data, date('Y-m-d') . '-log.sql',
+            $this->saveLog($data, date('Y-m-d') . $filePrefix . '-log.sql',
                 ($queryNr == 1 && (bool)$this->override));
         }
 
         // save slow query to file if enabled
         if ($this->slowLogStatus && $execTime >= $this->slowLogTime) {
-            $this->saveLog($data, date('Y-m-d') . '-slow-log.sql');
+            $this->saveLog($data,
+                date('Y-m-d') . $filePrefix . '-slow-log.sql');
         }
     }
 
@@ -205,7 +219,7 @@ class SqlLogger
     protected function getVersion()
     {
         $version = $this->app->version();
-        
+
         // for Lumen we need to do extra things to get Lumen version
         if (mb_strpos($version, 'Lumen') !== false) {
             $p = mb_strpos($version, '(');
