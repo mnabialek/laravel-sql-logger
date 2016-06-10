@@ -141,6 +141,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function getSeparateConsoleLogs()
     {
         return (bool)$this->app->config->get('sql_logger.log_console_to_separate_file',
-            env('SQL_SEPARATE_ARTISAN', false));
+            env('SQL_LOG_SEPARATE_ARTISAN', false));
     }
 }
