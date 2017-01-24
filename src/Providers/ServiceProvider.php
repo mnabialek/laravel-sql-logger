@@ -27,17 +27,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // executed queries
         if ($logStatus || $slowLogStatus) {
             // create logger class
-            $logger = $this->app->make(SqlLogger::class,
-                [
-                    $this->app,
-                    $logStatus,
-                    $slowLogStatus,
-                    $slowLogTime,
-                    $override,
-                    $directory,
-                    $convertToSeconds,
-                    $separateConsoleLog,
-                ]);
+            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime,
+                $override, $directory, $convertToSeconds, $separateConsoleLog);
 
             // listen to database queries
             $this->app['db']->listen(function (
