@@ -11,7 +11,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        // files to publish
+        // merge config
+        $this->mergeConfigFrom(__DIR__ . '/../../publish/config/sql_logger.php', 'sql_logger');
+
+        // register files to be published
         $this->publishes($this->getPublished());
 
         // get settings
@@ -27,8 +30,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // executed queries
         if ($logStatus || $slowLogStatus) {
             // create logger class
-            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime,
-                $override, $directory, $convertToSeconds, $separateConsoleLog);
+            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime, $override,
+                $directory, $convertToSeconds, $separateConsoleLog);
 
             // listen to database queries
             $this->app['db']->listen(function (
@@ -63,8 +66,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getSqlLoggingStatus()
     {
-        return (bool) $this->app->config->get('sql_logger.log_queries',
-            env('SQL_LOG_QUERIES', false));
+        return (bool) $this->app['config']->get('sql_logger.log_queries');
     }
 
     /**
@@ -74,8 +76,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getSlowSqlLoggingStatus()
     {
-        return (bool) $this->app->config->get('sql_logger.log_slow_queries',
-            env('SQL_LOG_SLOW_QUERIES', false));
+        return (bool) $this->app['config']->get('sql_logger.log_slow_queries');
     }
 
     /**
@@ -85,8 +86,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getSlowSqlLoggingTime()
     {
-        return $this->app->config->get('sql_logger.slow_queries_min_exec_time',
-            env('SQL_SLOW_QUERIES_MIN_EXEC_TIME', 100));
+        return $this->app['config']->get('sql_logger.slow_queries_min_exec_time');
     }
 
     /**
@@ -96,8 +96,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getOverrideStatus()
     {
-        return (bool) $this->app->config->get('sql_logger.override_log',
-            env('SQL_LOG_OVERRIDE', false));
+        return (bool) $this->app['config']->get('sql_logger.override_log');
     }
 
     /**
@@ -107,9 +106,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getLogDirectory()
     {
-        return $this->app->config->get('sql_logger.directory',
-            storage_path(env('SQL_LOG_DIRECTORY',
-                'logs' . DIRECTORY_SEPARATOR . 'sql')));
+        return $this->app['config']->get('sql_logger.directory');
     }
 
     /**
@@ -119,8 +116,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getConvertToSeconds()
     {
-        return (bool) $this->app->config->get('sql_logger.convert_to_seconds',
-            env('SQL_CONVERT_TIME_TO_SECONDS', false));
+        return (bool) $this->app['config']->get('sql_logger.convert_to_seconds');
     }
 
     /**
@@ -130,7 +126,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getSeparateConsoleLogs()
     {
-        return (bool) $this->app->config->get('sql_logger.log_console_to_separate_file',
-            env('SQL_LOG_SEPARATE_ARTISAN', false));
+        return (bool) $this->app['config']->get('sql_logger.log_console_to_separate_file');
     }
 }
