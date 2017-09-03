@@ -7,7 +7,7 @@ use Mnabialek\LaravelSqlLogger\SqlLogger;
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -42,7 +42,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Get files to be published
+     * Get files to be published.
      *
      * @return array
      */
@@ -50,37 +50,36 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return [
             realpath(__DIR__ .
-                '/../../config/sql_logger.php') =>
-                (function_exists('config_path') ?
+                '/../../config/sql_logger.php') => (function_exists('config_path') ?
                     config_path('sql_logger.php') :
                     base_path('config/sql_logger.php')),
         ];
     }
 
     /**
-     * Whether all queries should be logged
+     * Whether all queries should be logged.
      *
      * @return bool
      */
     protected function getSqlLoggingStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.log_queries',
+        return (bool) $this->app->config->get('sql_logger.log_queries',
             env('SQL_LOG_QUERIES', false));
     }
 
     /**
-     * Whether slow queries should be logged
+     * Whether slow queries should be logged.
      *
      * @return bool
      */
     protected function getSlowSqlLoggingStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.log_slow_queries',
+        return (bool) $this->app->config->get('sql_logger.log_slow_queries',
             env('SQL_LOG_SLOW_QUERIES', false));
     }
 
     /**
-     * Minimum execution time (in milliseconds) to consider query as slow
+     * Minimum execution time (in milliseconds) to consider query as slow.
      *
      * @return float
      */
@@ -91,18 +90,18 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Whether SQL log should be overridden for each request
+     * Whether SQL log should be overridden for each request.
      *
      * @return bool
      */
     protected function getOverrideStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.override_log',
+        return (bool) $this->app->config->get('sql_logger.override_log',
             env('SQL_LOG_OVERRIDE', false));
     }
 
     /**
-     * Get directory where log files should be saved
+     * Get directory where log files should be saved.
      *
      * @return string
      */
@@ -114,24 +113,24 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Whether query execution time should be converted to seconds
+     * Whether query execution time should be converted to seconds.
      *
      * @return bool
      */
     protected function getConvertToSeconds()
     {
-        return (bool)$this->app->config->get('sql_logger.convert_to_seconds',
+        return (bool) $this->app->config->get('sql_logger.convert_to_seconds',
             env('SQL_CONVERT_TIME_TO_SECONDS', false));
     }
 
     /**
-     * Whether console queries should be logged into separate files
+     * Whether console queries should be logged into separate files.
      *
      * @return bool
      */
     protected function getSeparateConsoleLogs()
     {
-        return (bool)$this->app->config->get('sql_logger.log_console_to_separate_file',
+        return (bool) $this->app->config->get('sql_logger.log_console_to_separate_file',
             env('SQL_LOG_SEPARATE_ARTISAN', false));
     }
 }
