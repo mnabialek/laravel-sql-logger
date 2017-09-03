@@ -5,56 +5,56 @@ namespace Mnabialek\LaravelSqlLogger;
 class SqlLogger
 {
     /**
-     * Application version
+     * Application version.
      *
      * @var string
      */
     protected $version;
 
     /**
-     * Whether SQL queries should be logged
+     * Whether SQL queries should be logged.
      *
      * @var bool
      */
     protected $logStatus;
 
     /**
-     * Whether slow SQL queries should be logged
+     * Whether slow SQL queries should be logged.
      *
      * @var bool
      */
     protected $slowLogStatus;
 
     /**
-     * Slow query execution time
+     * Slow query execution time.
      *
      * @var float
      */
     protected $slowLogTime;
 
     /**
-     * Whether log file should be overridden for each request
+     * Whether log file should be overridden for each request.
      *
      * @var bool
      */
     protected $override;
 
     /**
-     * Location where log files should be stored
+     * Location where log files should be stored.
      *
      * @var string
      */
     protected $directory;
 
     /**
-     * Whether query execution time should be converted to seconds
+     * Whether query execution time should be converted to seconds.
      *
      * @var bool
      */
     protected $convertToSeconds;
 
     /**
-     * Whether artisan queries should be saved into separate files
+     * Whether artisan queries should be saved into separate files.
      *
      * @var bool
      */
@@ -63,14 +63,14 @@ class SqlLogger
     /**
      * SqlLogger constructor.
      *
-     * @param $app
-     * @param $logStatus
-     * @param $slowLogStatus
-     * @param $slowLogTime
-     * @param $override
-     * @param $directory
-     * @param $convertToSeconds
-     * @param $separateConsoleLog
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param bool $logStatus
+     * @param bool $slowLogStatus
+     * @param float $slowLogTime
+     * @param bool $override
+     * @param string $directory
+     * @param bool $convertToSeconds
+     * @param bool $separateConsoleLog
      */
     public function __construct(
         $app,
@@ -93,7 +93,7 @@ class SqlLogger
     }
 
     /**
-     * Log query
+     * Log query.
      *
      * @param mixed $query
      * @param mixed $bindings
@@ -106,11 +106,9 @@ class SqlLogger
         ++$queryNr;
 
         try {
-            list($sqlQuery, $execTime) =
-                $this->getSqlQuery($query, $bindings, $time);
+            list($sqlQuery, $execTime) = $this->getSqlQuery($query, $bindings, $time);
         } catch (\Exception $e) {
-            $this->app->log->notice("SQL query {$queryNr} cannot be bound: " .
-                $query);
+            $this->app->log->notice("SQL query {$queryNr} cannot be bound: " . $query);
 
             return;
         }
@@ -121,7 +119,7 @@ class SqlLogger
     }
 
     /**
-     * Save data to log file
+     * Save data to log file.
      *
      * @param string $data
      * @param int $execTime
@@ -135,7 +133,7 @@ class SqlLogger
         // save normal query to file if enabled
         if ($this->logStatus) {
             $this->saveLog($data, date('Y-m-d') . $filePrefix . '-log.sql',
-                ($queryNr == 1 && (bool)$this->override));
+                ($queryNr == 1 && (bool) $this->override));
         }
 
         // save slow query to file if enabled
@@ -146,7 +144,7 @@ class SqlLogger
     }
 
     /**
-     * Save data to log file
+     * Save data to log file.
      *
      * @param string $data
      * @param string $fileName
@@ -159,7 +157,7 @@ class SqlLogger
     }
 
     /**
-     * Get full query information to be used to save it
+     * Get full query information to be used to save it.
      *
      * @param int $queryNr
      * @param string $query
@@ -178,7 +176,7 @@ class SqlLogger
     }
 
     /**
-     * Get SQL query and query exection time
+     * Get SQL query and query exection time.
      *
      * @param mixed $query
      * @param mixed $bindings
@@ -212,7 +210,7 @@ class SqlLogger
     }
 
     /**
-     * Get framework version
+     * Get framework version.
      *
      * @return string
      */

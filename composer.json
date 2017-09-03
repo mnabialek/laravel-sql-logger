@@ -1,12 +1,12 @@
 {
     "name": "mnabialek/laravel-sql-logger",
     "description": "Log SQL queries in Laravel/Lumen framework",
-    "keywords": ["laravel", "sql", "log", "logger", "lumen"],
+    "keywords": ["laravel", "sql", "log", "logger", "lumen", "sql logger", "log sql queries"],
     "license": "MIT",
     "authors": [
         {
             "name": "Marcin Nabiałek",
-            "email": "gitre@nabialek.org"
+            "email": "dev@nabialek.org"
         }
     ],
     "require": {
@@ -17,5 +17,14 @@
             "Mnabialek\\LaravelSqlLogger\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "~2.5"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mnabialek\\LaravelSqlLogger\\Providers\\ServiceProvider"
+            ]
+        }
+    } 
 }

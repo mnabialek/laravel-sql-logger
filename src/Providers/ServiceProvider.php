@@ -7,11 +7,14 @@ use Mnabialek\LaravelSqlLogger\SqlLogger;
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
-        // files to publish
+        // merge config
+        $this->mergeConfigFrom(__DIR__ . '/../../publish/config/sql_logger.php', 'sql_logger');
+
+        // register files to be published
         $this->publishes($this->getPublished());
 
         // get settings
@@ -27,8 +30,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // executed queries
         if ($logStatus || $slowLogStatus) {
             // create logger class
-            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime,
-                $override, $directory, $convertToSeconds, $separateConsoleLog);
+            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime, $override,
+                $directory, $convertToSeconds, $separateConsoleLog);
 
             // listen to database queries
             $this->app['db']->listen(function (
@@ -42,7 +45,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Get files to be published
+     * Get files to be published.
      *
      * @return array
      */
@@ -50,88 +53,79 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return [
             realpath(__DIR__ .
-                '/../../config/sql_logger.php') =>
-                (function_exists('config_path') ?
+                '/../../config/sql_logger.php') => (function_exists('config_path') ?
                     config_path('sql_logger.php') :
                     base_path('config/sql_logger.php')),
         ];
     }
 
     /**
-     * Whether all queries should be logged
+     * Whether all queries should be logged.
      *
      * @return bool
      */
     protected function getSqlLoggingStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.log_queries',
-            env('SQL_LOG_QUERIES', false));
+        return (bool) $this->app['config']->get('sql_logger.log_queries');
     }
 
     /**
-     * Whether slow queries should be logged
+     * Whether slow queries should be logged.
      *
      * @return bool
      */
     protected function getSlowSqlLoggingStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.log_slow_queries',
-            env('SQL_LOG_SLOW_QUERIES', false));
+        return (bool) $this->app['config']->get('sql_logger.log_slow_queries');
     }
 
     /**
-     * Minimum execution time (in milliseconds) to consider query as slow
+     * Minimum execution time (in milliseconds) to consider query as slow.
      *
      * @return float
      */
     protected function getSlowSqlLoggingTime()
     {
-        return $this->app->config->get('sql_logger.slow_queries_min_exec_time',
-            env('SQL_SLOW_QUERIES_MIN_EXEC_TIME', 100));
+        return $this->app['config']->get('sql_logger.slow_queries_min_exec_time');
     }
 
     /**
-     * Whether SQL log should be overridden for each request
+     * Whether SQL log should be overridden for each request.
      *
      * @return bool
      */
     protected function getOverrideStatus()
     {
-        return (bool)$this->app->config->get('sql_logger.override_log',
-            env('SQL_LOG_OVERRIDE', false));
+        return (bool) $this->app['config']->get('sql_logger.override_log');
     }
 
     /**
-     * Get directory where log files should be saved
+     * Get directory where log files should be saved.
      *
      * @return string
      */
     protected function getLogDirectory()
     {
-        return $this->app->config->get('sql_logger.directory',
-            storage_path(env('SQL_LOG_DIRECTORY',
-                'logs' . DIRECTORY_SEPARATOR . 'sql')));
+        return $this->app['config']->get('sql_logger.directory');
     }
 
     /**
-     * Whether query execution time should be converted to seconds
+     * Whether query execution time should be converted to seconds.
      *
      * @return bool
      */
     protected function getConvertToSeconds()
     {
-        return (bool)$this->app->config->get('sql_logger.convert_to_seconds',
-            env('SQL_CONVERT_TIME_TO_SECONDS', false));
+        return (bool) $this->app['config']->get('sql_logger.convert_to_seconds');
     }
 
     /**
-     * Whether console queries should be logged into separate files
+     * Whether console queries should be logged into separate files.
      *
      * @return bool
      */
     protected function getSeparateConsoleLogs()
     {
-        return (bool)$this->app->config->get('sql_logger.log_console_to_separate_file',
-            env('SQL_LOG_SEPARATE_ARTISAN', false));
+        return (bool) $this->app['config']->get('sql_logger.log_console_to_separate_file');
     }
 }
