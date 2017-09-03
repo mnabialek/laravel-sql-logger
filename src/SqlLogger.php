@@ -63,14 +63,14 @@ class SqlLogger
     /**
      * SqlLogger constructor.
      *
-     * @param $app
-     * @param $logStatus
-     * @param $slowLogStatus
-     * @param $slowLogTime
-     * @param $override
-     * @param $directory
-     * @param $convertToSeconds
-     * @param $separateConsoleLog
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param bool $logStatus
+     * @param bool $slowLogStatus
+     * @param float $slowLogTime
+     * @param bool $override
+     * @param string $directory
+     * @param bool $convertToSeconds
+     * @param bool $separateConsoleLog
      */
     public function __construct(
         $app,
@@ -106,11 +106,9 @@ class SqlLogger
         ++$queryNr;
 
         try {
-            list($sqlQuery, $execTime) =
-                $this->getSqlQuery($query, $bindings, $time);
+            list($sqlQuery, $execTime) = $this->getSqlQuery($query, $bindings, $time);
         } catch (\Exception $e) {
-            $this->app->log->notice("SQL query {$queryNr} cannot be bound: " .
-                $query);
+            $this->app->log->notice("SQL query {$queryNr} cannot be bound: " . $query);
 
             return;
         }
