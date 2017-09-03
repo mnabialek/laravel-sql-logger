@@ -127,20 +127,43 @@ class SqlLogger
      */
     protected function save($data, $execTime, $queryNr)
     {
-        $filePrefix = ($this->separateConsoleLog &&
-        $this->app->runningInConsole()) ? '-artisan' : '';
+        $filePrefix = ($this->separateConsoleLog && $this->app->runningInConsole())
+            ? '-artisan' : '';
+
+        $this->createLogDirectoryIfNeeded($queryNr, $execTime);
 
         // save normal query to file if enabled
-        if ($this->logStatus) {
+        if ($this->shouldLogQuery()) {
             $this->saveLog($data, date('Y-m-d') . $filePrefix . '-log.sql',
                 ($queryNr == 1 && (bool) $this->override));
         }
 
         // save slow query to file if enabled
-        if ($this->slowLogStatus && $execTime >= $this->slowLogTime) {
-            $this->saveLog($data,
-                date('Y-m-d') . $filePrefix . '-slow-log.sql');
+        if ($this->shouldLogSlowQuery($execTime)) {
+            $this->saveLog($data, date('Y-m-d') . $filePrefix . '-slow-log.sql');
         }
+    }
+
+    /**
+     * Verify whether query should be logged.
+     *
+     * @return bool
+     */
+    protected function shouldLogQuery()
+    {
+        return $this->logStatus;
+    }
+
+    /**
+     * Verify whether slow query should be logged.
+     *
+     * @param float $execTime
+     *
+     * @return bool
+     */
+    protected function shouldLogSlowQuery($execTime)
+    {
+        return $this->slowLogStatus && $execTime >= $this->slowLogTime;
     }
 
     /**
@@ -161,7 +184,7 @@ class SqlLogger
      *
      * @param int $queryNr
      * @param string $query
-     * @param int $execTime
+     * @param float $execTime
      *
      * @return string
      */
@@ -171,8 +194,8 @@ class SqlLogger
             : $execTime . 'ms';
 
         return '/* Query ' . $queryNr . ' - ' . date('Y-m-d H:i:s') . ' [' .
-        $time . ']' . "  */\n" . $query . ';' .
-        "\n/*==================================================*/\n";
+            $time . ']' . "  */\n" . $query . ';' .
+            "\n/*==================================================*/\n";
     }
 
     /**
@@ -228,5 +251,19 @@ class SqlLogger
         }
 
         return $version;
+    }
+
+    /**
+     * Create log directory if it does not exist.
+     *
+     * @param int $queryNr
+     * @param int $execTime
+     */
+    protected function createLogDirectoryIfNeeded($queryNr, $execTime)
+    {
+        if ($queryNr == 1 && ! file_exists($this->directory) &&
+            ($this->shouldLogQuery() || $this->shouldLogSlowQuery($execTime))) {
+            mkdir($this->directory, 0777, true);
+        }
     }
 }
