@@ -14,7 +14,7 @@ when developing your application to verify whether your queries are valid and to
 2. If you use Laravel < 5.5 open `config/app.php` and in `providers` section add:
  
     ```php
-     Mnabialek\LaravelSqlLogger\Providers\ServiceProvider::class,
+    Mnabialek\LaravelSqlLogger\Providers\ServiceProvider::class,
     ```
     
     Laravel 5.5 uses Package Auto-Discovery and it will automatically load this service provider so you don't need to add anything into above file.
