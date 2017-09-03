@@ -53,7 +53,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return [
             realpath(__DIR__ .
-                '/../../config/sql_logger.php') => (function_exists('config_path') ?
+                '/../../publish/config/sql_logger.php') => (function_exists('config_path') ?
                     config_path('sql_logger.php') :
                     base_path('config/sql_logger.php')),
         ];
