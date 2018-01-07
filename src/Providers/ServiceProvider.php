@@ -33,13 +33,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->publishes($this->getPublished());
 
         // get settings
-        $logStatus = $this->config->getSqlLoggingStatus();
-        $slowLogStatus = $this->config->getSlowSqlLoggingStatus();
-        $slowLogTime = $this->config->getSlowSqlLoggingTime();
-        $override = $this->config->getOverrideStatus();
-        $directory = $this->config->getLogDirectory();
-        $convertToSeconds = $this->config->getConvertToSeconds();
-        $separateConsoleLog = $this->config->getSeparateConsoleLogs();
+        $logStatus = $this->config->logQueries();
+        $slowLogStatus = $this->config->logSlowQueries();
+        $slowLogTime = $this->config->slowLogTime();
+        $override = $this->config->overrideFile();
+        $directory = $this->config->logDirectory();
+        $convertToSeconds = $this->config->useSeconds();
+        $separateConsoleLog = $this->config->separateConsoleLogs();
 
         // if any of logging type is enabled we will listen database to get all
         // executed queries

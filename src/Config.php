@@ -26,7 +26,7 @@ class Config
      *
      * @return bool
      */
-    public function getSqlLoggingStatus()
+    public function logQueries()
     {
         return (bool) $this->repository->get('sql_logger.log_queries');
     }
@@ -36,7 +36,7 @@ class Config
      *
      * @return bool
      */
-    public function getSlowSqlLoggingStatus()
+    public function logSlowQueries()
     {
         return (bool) $this->repository->get('sql_logger.log_slow_queries');
     }
@@ -46,7 +46,7 @@ class Config
      *
      * @return float
      */
-    public function getSlowSqlLoggingTime()
+    public function slowLogTime()
     {
         return $this->repository->get('sql_logger.slow_queries_min_exec_time');
     }
@@ -56,7 +56,7 @@ class Config
      *
      * @return bool
      */
-    public function getOverrideStatus()
+    public function overrideFile()
     {
         return (bool) $this->repository->get('sql_logger.override_log');
     }
@@ -66,7 +66,7 @@ class Config
      *
      * @return string
      */
-    public function getLogDirectory()
+    public function logDirectory()
     {
         return $this->repository->get('sql_logger.directory');
     }
@@ -76,7 +76,7 @@ class Config
      *
      * @return bool
      */
-    public function getConvertToSeconds()
+    public function useSeconds()
     {
         return (bool) $this->repository->get('sql_logger.convert_to_seconds');
     }
@@ -86,7 +86,7 @@ class Config
      *
      * @return bool
      */
-    public function getSeparateConsoleLogs()
+    public function separateConsoleLogs()
     {
         return (bool) $this->repository->get('sql_logger.log_console_to_separate_file');
     }
