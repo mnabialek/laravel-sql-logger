@@ -32,23 +32,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         // register files to be published
         $this->publishes($this->getPublished());
 
-        // get settings
-        $logStatus = $this->config->logQueries();
-        $slowLogStatus = $this->config->logSlowQueries();
-        $slowLogTime = $this->config->slowLogTime();
-        $override = $this->config->overrideFile();
-        $directory = $this->config->logDirectory();
-        $convertToSeconds = $this->config->useSeconds();
-        $separateConsoleLog = $this->config->separateConsoleLogs();
-
         // if no logging is enabled, we can stop here, nothing more should be done
         if (! $this->shouldLogAnything()) {
             return;
         }
 
         // create logger class
-        $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime, $override,
-            $directory, $convertToSeconds, $separateConsoleLog);
+        $logger = new SqlLogger($this->app, $this->config);
 
         // listen to database queries
         $this->app['db']->listen(function (

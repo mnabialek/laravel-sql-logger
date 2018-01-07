@@ -64,32 +64,18 @@ class SqlLogger
      * SqlLogger constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param bool $logStatus
-     * @param bool $slowLogStatus
-     * @param float $slowLogTime
-     * @param bool $override
-     * @param string $directory
-     * @param bool $convertToSeconds
-     * @param bool $separateConsoleLog
+     * @param Config $config
      */
-    public function __construct(
-        $app,
-        $logStatus,
-        $slowLogStatus,
-        $slowLogTime,
-        $override,
-        $directory,
-        $convertToSeconds,
-        $separateConsoleLog
-    ) {
+    public function __construct($app, $config)
+    {
         $this->app = $app;
-        $this->logStatus = $logStatus;
-        $this->slowLogStatus = $slowLogStatus;
-        $this->slowLogTime = $slowLogTime;
-        $this->override = $override;
-        $this->directory = rtrim($directory, '\\/');
-        $this->convertToSeconds = $convertToSeconds;
-        $this->separateConsoleLog = $separateConsoleLog;
+        $this->logStatus = $config->logQueries();
+        $this->slowLogStatus = $config->logSlowQueries();
+        $this->slowLogTime = $config->slowLogTime();
+        $this->override = $config->overrideFile();
+        $this->directory = rtrim($config->logDirectory(), '\\/');
+        $this->convertToSeconds = $config->useSeconds();
+        $this->separateConsoleLog = $config->separateConsoleLogs();
     }
 
     /**
