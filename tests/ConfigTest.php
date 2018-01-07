@@ -49,6 +49,15 @@ class ConfigTest extends UnitTestCase
     }
 
     /** @test */
+    public function it_returns_valid_value_for_slowLogTime()
+    {
+        $value = '700';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries_min_exec_time')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->slowLogTime());
+    }
+
+    /** @test */
     public function it_returns_valid_values_for_overrideFile()
     {
         $this->repository->shouldReceive('get')->once()->with('sql_logger.override_log')
