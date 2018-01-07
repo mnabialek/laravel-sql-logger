@@ -41,22 +41,23 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $convertToSeconds = $this->config->useSeconds();
         $separateConsoleLog = $this->config->separateConsoleLogs();
 
-        // if any of logging type is enabled we will listen database to get all
-        // executed queries
-        if ($logStatus || $slowLogStatus) {
-            // create logger class
-            $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime, $override,
-                $directory, $convertToSeconds, $separateConsoleLog);
-
-            // listen to database queries
-            $this->app['db']->listen(function (
-                $query,
-                $bindings = null,
-                $time = null
-            ) use ($logger) {
-                $logger->log($query, $bindings, $time);
-            });
+        // if no logging is enabled, we can stop here, nothing more should be done
+        if (! $this->shouldLogAnything()) {
+            return;
         }
+
+        // create logger class
+        $logger = new SqlLogger($this->app, $logStatus, $slowLogStatus, $slowLogTime, $override,
+            $directory, $convertToSeconds, $separateConsoleLog);
+
+        // listen to database queries
+        $this->app['db']->listen(function (
+            $query,
+            $bindings = null,
+            $time = null
+        ) use ($logger) {
+            $logger->log($query, $bindings, $time);
+        });
     }
 
     /**
@@ -72,5 +73,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     config_path('sql_logger.php') :
                     base_path('config/sql_logger.php')),
         ];
+    }
+
+    /**
+     * Verify whether anything should be logged.
+     *
+     * @return bool
+     */
+    protected function shouldLogAnything()
+    {
+        return $this->config->logQueries() || $this->config->logSlowQueries();
     }
 }
