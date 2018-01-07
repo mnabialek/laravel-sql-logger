@@ -1,0 +1,17 @@
+language: php
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+# Commands to be run before your environment runs.
+before_script:
+  - composer self-update
+  - composer install --no-interaction
+
+script:
+ - mkdir -p build/logs
+ - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+ - php vendor/bin/php-coveralls -v
