@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         // merge config
-        $this->mergeConfigFrom(__DIR__ . '/../../publish/config/sql_logger.php', 'sql_logger');
+        $this->mergeConfigFrom($this->configFileLocation(), 'sql_logger');
 
         // register files to be published
         $this->publishes($this->getPublished());
@@ -38,16 +38,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
 
         // create logger class
-        $logger = new SqlLogger($this->app, $this->config);
+        $logger = $this->app->make(SqlLogger::class);
 
         // listen to database queries
-        $this->app['db']->listen(function (
-            $query,
-            $bindings = null,
-            $time = null
-        ) use ($logger) {
-            $logger->log($query, $bindings, $time);
-        });
+        $this->app['db']->listen($this->getListenClosure($logger));
     }
 
     /**
@@ -58,10 +52,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function getPublished()
     {
         return [
-            realpath(__DIR__ .
-                '/../../publish/config/sql_logger.php') => (function_exists('config_path') ?
-                    config_path('sql_logger.php') :
-                    base_path('config/sql_logger.php')),
+            $this->configFileLocation() => (function_exists('config_path') ?
+                config_path('sql_logger.php') :
+                base_path('config/sql_logger.php')),
         ];
     }
 
@@ -73,5 +66,29 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function shouldLogAnything()
     {
         return $this->config->logQueries() || $this->config->logSlowQueries();
+    }
+
+    /**
+     * Get config file location.
+     *
+     * @return bool|string
+     */
+    protected function configFileLocation()
+    {
+        return realpath(__DIR__ . '/../../publish/config/sql_logger.php');
+    }
+
+    /**
+     * Get closure that will be used for listening executed database queries.
+     *
+     * @param SqlLogger $logger
+     *
+     * @return \Closure
+     */
+    protected function getListenClosure(SqlLogger $logger)
+    {
+        return function ($query, $bindings = null, $time = null) use ($logger) {
+            $logger->log($query, $bindings, $time);
+        };
     }
 }
