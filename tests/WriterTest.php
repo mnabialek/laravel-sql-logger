@@ -53,7 +53,7 @@ class WriterTest extends UnitTestCase
         $this->filesystem = new Filesystem();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         $this->filesystem->deleteDirectory($this->directory);
         parent::tearDown();
