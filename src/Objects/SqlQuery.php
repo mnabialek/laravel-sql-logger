@@ -22,7 +22,7 @@ class SqlQuery
     private $bindings;
 
     /**
-     * @var int
+     * @var float
      */
     private $time;
 
@@ -75,7 +75,7 @@ class SqlQuery
     /**
      * Get time.
      * 
-     * @return int
+     * @return float
      */
     public function time()
     {
