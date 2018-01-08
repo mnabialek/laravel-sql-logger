@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "98fe4a6b74d7910275290bd0e622b99d",
+    "content-hash": "0789c70dfb3628f6f2b1ce528a5f23f4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -173,6 +173,54 @@
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
             "time": "2017-12-24T20:02:59+00:00"
+        },
+        {
+            "name": "mnabialek/laravel-version",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mnabialek/laravel-version.git",
+                "reference": "6400a4826c82ade1b7509af191634f0e99006b56"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mnabialek/laravel-version/zipball/6400a4826c82ade1b7509af191634f0e99006b56",
+                "reference": "6400a4826c82ade1b7509af191634f0e99006b56",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.9",
+                "mockery/mockery": "^1.0",
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mnabialek\\LaravelVersion\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcin Nabiałek",
+                    "email": "dev@nabialek.org"
+                }
+            ],
+            "description": "Get Laravel/Lumen version",
+            "keywords": [
+                "laravel",
+                "laravel version",
+                "lumen",
+                "lumen version"
+            ],
+            "time": "2018-01-07T18:09:26+00:00"
         },
         {
             "name": "nesbot/carbon",
