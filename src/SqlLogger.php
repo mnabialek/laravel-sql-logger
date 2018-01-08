@@ -2,254 +2,63 @@
 
 namespace Mnabialek\LaravelSqlLogger;
 
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+
 class SqlLogger
 {
     /**
-     * Application version.
-     *
-     * @var string
+     * @var Application
      */
-    protected $version;
+    private $app;
 
     /**
-     * Whether SQL queries should be logged.
-     *
-     * @var bool
+     * @var Query
      */
-    protected $logStatus;
+    private $query;
 
     /**
-     * Whether slow SQL queries should be logged.
-     *
-     * @var bool
+     * @var Writer
      */
-    protected $slowLogStatus;
+    private $writer;
 
     /**
-     * Slow query execution time.
+     * Number of executed queries.
      *
-     * @var float
+     * @var int
      */
-    protected $slowLogTime;
-
-    /**
-     * Whether log file should be overridden for each request.
-     *
-     * @var bool
-     */
-    protected $override;
-
-    /**
-     * Location where log files should be stored.
-     *
-     * @var string
-     */
-    protected $directory;
-
-    /**
-     * Whether query execution time should be converted to seconds.
-     *
-     * @var bool
-     */
-    protected $convertToSeconds;
-
-    /**
-     * Whether artisan queries should be saved into separate files.
-     *
-     * @var bool
-     */
-    protected $separateConsoleLog;
+    private $queryNumber = 0;
 
     /**
      * SqlLogger constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param Config $config
+     * @param Query $query
+     * @param Writer $writer
      */
-    public function __construct($app, $config)
+    public function __construct(Application $app, Query $query, Writer $writer)
     {
         $this->app = $app;
-        $this->logStatus = $config->logQueries();
-        $this->slowLogStatus = $config->logSlowQueries();
-        $this->slowLogTime = $config->slowLogTime();
-        $this->override = $config->overrideFile();
-        $this->directory = rtrim($config->logDirectory(), '\\/');
-        $this->convertToSeconds = $config->useSeconds();
-        $this->separateConsoleLog = $config->separateConsoleLogs();
+        $this->query = $query;
+        $this->writer = $writer;
     }
 
     /**
      * Log query.
      *
-     * @param mixed $query
-     * @param mixed $bindings
-     * @param mixed $time
+     * @param string|\Illuminate\Database\Events\QueryExecuted $query
+     * @param array|null $bindings
+     * @param float|null $time
      */
-    public function log($query, $bindings, $time)
+    public function log($query, array $bindings = null, $time = null)
     {
-        static $queryNr = 0;
-
-        ++$queryNr;
+        ++$this->queryNumber;
 
         try {
-            list($sqlQuery, $execTime) = $this->getSqlQuery($query, $bindings, $time);
-        } catch (\Exception $e) {
-            $this->app->log->notice("SQL query {$queryNr} cannot be bound: " . $query);
-
-            return;
-        }
-
-        $logData = $this->getLogData($queryNr, $sqlQuery, $execTime);
-
-        $this->save($logData, $execTime, $queryNr);
-    }
-
-    /**
-     * Save data to log file.
-     *
-     * @param string $data
-     * @param int $execTime
-     * @param int $queryNr
-     */
-    protected function save($data, $execTime, $queryNr)
-    {
-        $filePrefix = ($this->separateConsoleLog && $this->app->runningInConsole())
-            ? '-artisan' : '';
-
-        $this->createLogDirectoryIfNeeded($queryNr, $execTime);
-
-        // save normal query to file if enabled
-        if ($this->shouldLogQuery()) {
-            $this->saveLog($data, date('Y-m-d') . $filePrefix . '-log.sql',
-                ($queryNr == 1 && (bool) $this->override));
-        }
-
-        // save slow query to file if enabled
-        if ($this->shouldLogSlowQuery($execTime)) {
-            $this->saveLog($data, date('Y-m-d') . $filePrefix . '-slow-log.sql');
-        }
-    }
-
-    /**
-     * Verify whether query should be logged.
-     *
-     * @return bool
-     */
-    protected function shouldLogQuery()
-    {
-        return $this->logStatus;
-    }
-
-    /**
-     * Verify whether slow query should be logged.
-     *
-     * @param float $execTime
-     *
-     * @return bool
-     */
-    protected function shouldLogSlowQuery($execTime)
-    {
-        return $this->slowLogStatus && $execTime >= $this->slowLogTime;
-    }
-
-    /**
-     * Save data to log file.
-     *
-     * @param string $data
-     * @param string $fileName
-     * @param bool $override
-     */
-    protected function saveLog($data, $fileName, $override = false)
-    {
-        file_put_contents($this->directory . DIRECTORY_SEPARATOR . $fileName,
-            $data, $override ? 0 : FILE_APPEND);
-    }
-
-    /**
-     * Get full query information to be used to save it.
-     *
-     * @param int $queryNr
-     * @param string $query
-     * @param float $execTime
-     *
-     * @return string
-     */
-    protected function getLogData($queryNr, $query, $execTime)
-    {
-        $time = $this->convertToSeconds ? ($execTime / 1000.0) . '.s'
-            : $execTime . 'ms';
-
-        return '/* Query ' . $queryNr . ' - ' . date('Y-m-d H:i:s') . ' [' .
-            $time . ']' . "  */\n" . $query . ';' .
-            "\n/*==================================================*/\n";
-    }
-
-    /**
-     * Get SQL query and query exection time.
-     *
-     * @param mixed $query
-     * @param mixed $bindings
-     * @param mixed $execTime
-     *
-     * @return array
-     */
-    protected function getSqlQuery($query, $bindings, $execTime)
-    {
-        //for Laravel 5.2 $query is object and it holds the data
-        if (version_compare($this->getVersion(), '5.2.0', '>=')) {
-            $bindings = $query->bindings;
-            $execTime = $query->time;
-            $query = $query->sql;
-        }
-
-        // need to format bindings properly
-        foreach ($bindings as $i => $binding) {
-            if ($binding instanceof \DateTime) {
-                $bindings[$i] = $binding->format('Y-m-d H:i:s');
-            } elseif (is_string($binding)) {
-                $bindings[$i] = str_replace("'", "\\'", $binding);
-            }
-        }
-
-        // now we create full SQL query - in case of failure, we log this
-        $query = str_replace(['%', '?', "\n"], ['%%', "'%s'", ' '], $query);
-        $fullSql = vsprintf($query, $bindings);
-
-        return [$fullSql, $execTime];
-    }
-
-    /**
-     * Get framework version.
-     *
-     * @return string
-     */
-    protected function getVersion()
-    {
-        $version = $this->app->version();
-
-        // for Lumen we need to do extra things to get Lumen version
-        if (mb_strpos($version, 'Lumen') !== false) {
-            $p = mb_strpos($version, '(');
-            $p2 = mb_strpos($version, ')');
-            if ($p !== false && $p2 !== false) {
-                $version = trim(mb_substr($version, $p + 1, $p2 - $p - 1));
-            }
-        }
-
-        return $version;
-    }
-
-    /**
-     * Create log directory if it does not exist.
-     *
-     * @param int $queryNr
-     * @param int $execTime
-     */
-    protected function createLogDirectoryIfNeeded($queryNr, $execTime)
-    {
-        if ($queryNr == 1 && ! file_exists($this->directory) &&
-            ($this->shouldLogQuery() || $this->shouldLogSlowQuery($execTime))) {
-            mkdir($this->directory, 0777, true);
+            $sqlQuery = $this->query->get($this->queryNumber, $query, $bindings, $time);
+            $this->writer->save($sqlQuery);
+        } catch (Exception $e) {
+            $this->app['log']->notice("Cannot log query nr {$this->queryNumber}. Exception:\n" . $e);
         }
     }
 }
