@@ -32,14 +32,14 @@ class SqlQuery
      * @param int $number
      * @param string $sql
      * @param array $bindings
-     * @param int $time
+     * @param float $time
      */
     public function __construct($number, $sql, array $bindings, $time)
     {
+        $this->number = $number;
         $this->sql = $sql;
         $this->bindings = $bindings;
         $this->time = $time;
-        $this->number = $number;
     }
 
     /**
