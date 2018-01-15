@@ -97,6 +97,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
@@ -125,6 +126,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
@@ -152,6 +154,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
@@ -179,6 +182,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(2, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
@@ -201,6 +205,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('consoleSuffix')->once()->withNoArgs()->andReturn('-sample');
@@ -225,6 +230,7 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
@@ -250,6 +256,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.22);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
@@ -292,6 +299,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('consoleSuffix')->once()->withNoArgs()->andReturn('-example');
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
@@ -316,6 +324,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
@@ -337,8 +346,10 @@ class WriterTest extends UnitTestCase
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
         $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
         $this->app->shouldReceive('runningInConsole')->times(2)->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
@@ -351,5 +362,139 @@ class WriterTest extends UnitTestCase
         $expectedSlowFileName = $this->directory . '/' . $now->toDateString() . '-slow-log.sql';
         $this->assertFileExists($expectedSlowFileName);
         $this->assertSame($lineContent, file_get_contents($expectedSlowFileName));
+    }
+
+    /** @test */
+    public function it_saves_select_query_to_file_when_pattern_set_to_select_queries()
+    {
+        $now = Carbon::parse('2015-02-03 06:41:31');
+        Carbon::setTestNow($now);
+
+        $lineContent = 'Sample log line';
+
+        $query = new SqlQuery(1, 'select * FROM test', [], 5.41);
+        $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^SELECT .*$#i');
+        $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#^SELECT .*$#i');
+        $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
+        $this->app->shouldReceive('runningInConsole')->times(2)->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
+        $this->writer->save($query);
+        $this->assertFileExists($this->directory);
+        $this->assertCount(2, $this->filesystem->allFiles($this->directory));
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-log.sql';
+        $this->assertFileExists($expectedFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedFileName));
+        $expectedSlowFileName = $this->directory . '/' . $now->toDateString() . '-slow-log.sql';
+        $this->assertFileExists($expectedSlowFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedSlowFileName));
+    }
+
+    /** @test */
+    public function it_doesnt_save_select_query_to_file_when_pattern_set_to_insert_or_update_queries()
+    {
+        $now = Carbon::parse('2015-02-03 06:41:31');
+        Carbon::setTestNow($now);
+
+        $lineContent = 'Sample log line';
+
+        $query = new SqlQuery(1, 'select * FROM test', [], 5.41);
+        $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
+        $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
+        $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
+        $this->writer->save($query);
+        $this->assertFileExists($this->directory);
+        $this->assertCount(0, $this->filesystem->allFiles($this->directory));
+    }
+
+    /** @test */
+    public function it_saves_insert_query_to_file_when_pattern_set_to_insert_or_update_queries()
+    {
+        $now = Carbon::parse('2015-02-03 06:41:31');
+        Carbon::setTestNow($now);
+
+        $lineContent = 'Sample log line';
+
+        $query = new SqlQuery(1, 'INSERT INTO test(one, two, three) values(?, ?, ?)', [], 5.41);
+        $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
+        $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
+        $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
+        $this->app->shouldReceive('runningInConsole')->times(2)->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
+        $this->writer->save($query);
+        $this->assertFileExists($this->directory);
+        $this->assertCount(2, $this->filesystem->allFiles($this->directory));
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-log.sql';
+        $this->assertFileExists($expectedFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedFileName));
+        $expectedSlowFileName = $this->directory . '/' . $now->toDateString() . '-slow-log.sql';
+        $this->assertFileExists($expectedSlowFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedSlowFileName));
+    }
+
+    /** @test */
+    public function it_uses_raw_query_without_bindings_when_using_query_pattern()
+    {
+        $now = Carbon::parse('2015-02-03 06:41:31');
+        Carbon::setTestNow($now);
+
+        $lineContent = 'Sample log line';
+
+        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41);
+        $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE test SET x = \? |INSERT ).*$#i');
+        $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE test SET x = \? |INSERT ).*$#i');
+        $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
+        $this->app->shouldReceive('runningInConsole')->times(2)->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
+        $this->writer->save($query);
+        $this->assertFileExists($this->directory);
+        $this->assertCount(2, $this->filesystem->allFiles($this->directory));
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-log.sql';
+        $this->assertFileExists($expectedFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedFileName));
+        $expectedSlowFileName = $this->directory . '/' . $now->toDateString() . '-slow-log.sql';
+        $this->assertFileExists($expectedSlowFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedSlowFileName));
+    }
+
+    /** @test */
+    public function it_uses_different_patterns_for_log_and_slow_log_queries()
+    {
+        $now = Carbon::parse('2015-02-03 06:41:31');
+        Carbon::setTestNow($now);
+
+        $lineContent = 'Sample log line';
+
+        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41);
+        $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE test SET x = \? |INSERT ).*$#i');
+        $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
+        $this->config->shouldReceive('slowQueriesPattern')->once()->withNoArgs()->andReturn('#^SELECT.*$#i');
+        $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
+        $this->writer->save($query);
+        $this->assertFileExists($this->directory);
+        $this->assertCount(1, $this->filesystem->allFiles($this->directory));
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-log.sql';
+        $this->assertFileExists($expectedFileName);
+        $this->assertSame($lineContent, file_get_contents($expectedFileName));
     }
 }

@@ -48,18 +48,18 @@ class Writer
 
         $line = $this->formatter->getLine($query);
 
-        if ($this->config->logAllQueries()) {
+        if ($this->shouldLogQuery($query)) {
             $this->saveLine($line, $this->logName(), $this->shouldOverrideFile($query));
         }
 
-        if ($this->shouldLogSlowQuery($query->time())) {
+        if ($this->shouldLogSlowQuery($query)) {
             $this->saveLine($line, $this->slowLogName());
         }
     }
 
     /**
      * Create directory if it does not exist yet.
-     * 
+     *
      * @param int $queryNumber
      */
     protected function createDirectoryIfNotExists($queryNumber)
@@ -110,15 +110,29 @@ class Writer
     }
 
     /**
-     * Verify whether slow query should be logged.
+     * Verify whether query should be logged.
      *
-     * @param float $execTime
+     * @param SqlQuery $query
      *
      * @return bool
      */
-    protected function shouldLogSlowQuery($execTime)
+    protected function shouldLogQuery(SqlQuery $query)
     {
-        return $this->config->logSlowQueries() && $execTime >= $this->config->slowLogTime();
+        return $this->config->logAllQueries() &&
+            preg_match($this->config->allQueriesPattern(), $query->raw());
+    }
+
+    /**
+     * Verify whether slow query should be logged.
+     *
+     * @param SqlQuery $query
+     *
+     * @return bool
+     */
+    protected function shouldLogSlowQuery(SqlQuery $query)
+    {
+        return $this->config->logSlowQueries() && $query->time() >= $this->config->slowLogTime() &&
+            preg_match($this->config->slowQueriesPattern(), $query->raw());
     }
 
     /**
