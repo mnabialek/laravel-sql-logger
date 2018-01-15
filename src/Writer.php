@@ -48,7 +48,7 @@ class Writer
 
         $line = $this->formatter->getLine($query);
 
-        if ($this->config->logQueries()) {
+        if ($this->config->logAllQueries()) {
             $this->saveLine($line, $this->logName(), $this->shouldOverrideFile($query));
         }
 

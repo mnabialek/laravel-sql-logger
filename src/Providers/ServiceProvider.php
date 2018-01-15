@@ -65,7 +65,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function shouldLogAnything()
     {
-        return $this->config->logQueries() || $this->config->logSlowQueries();
+        return $this->config->logAllQueries() || $this->config->logSlowQueries();
     }
 
     /**

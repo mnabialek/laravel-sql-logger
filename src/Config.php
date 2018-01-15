@@ -22,46 +22,6 @@ class Config
     }
 
     /**
-     * Whether all queries should be logged.
-     *
-     * @return bool
-     */
-    public function logQueries()
-    {
-        return (bool) $this->repository->get('sql_logger.all_queries.enabled');
-    }
-
-    /**
-     * Whether slow queries should be logged.
-     *
-     * @return bool
-     */
-    public function logSlowQueries()
-    {
-        return (bool) $this->repository->get('sql_logger.slow_queries.enabled');
-    }
-
-    /**
-     * Minimum execution time (in milliseconds) to consider query as slow.
-     *
-     * @return float
-     */
-    public function slowLogTime()
-    {
-        return $this->repository->get('sql_logger.slow_queries.min_exec_time');
-    }
-
-    /**
-     * Whether SQL log should be overridden for each request.
-     *
-     * @return bool
-     */
-    public function overrideFile()
-    {
-        return (bool) $this->repository->get('sql_logger.all_queries.override_log');
-    }
-
-    /**
      * Get directory where log files should be saved.
      *
      * @return string
@@ -89,5 +49,45 @@ class Config
     public function separateConsoleLogs()
     {
         return (bool) $this->repository->get('sql_logger.general.separate_console_log');
+    }
+
+    /**
+     * Whether all queries should be logged.
+     *
+     * @return bool
+     */
+    public function logAllQueries()
+    {
+        return (bool) $this->repository->get('sql_logger.all_queries.enabled');
+    }
+
+    /**
+     * Whether SQL log should be overridden for each request.
+     *
+     * @return bool
+     */
+    public function overrideFile()
+    {
+        return (bool) $this->repository->get('sql_logger.all_queries.override_log');
+    }
+
+    /**
+     * Whether slow queries should be logged.
+     *
+     * @return bool
+     */
+    public function logSlowQueries()
+    {
+        return (bool) $this->repository->get('sql_logger.slow_queries.enabled');
+    }
+
+    /**
+     * Minimum execution time (in milliseconds) to consider query as slow.
+     *
+     * @return float
+     */
+    public function slowLogTime()
+    {
+        return $this->repository->get('sql_logger.slow_queries.min_exec_time');
     }
 }

@@ -25,15 +25,15 @@ class ConfigTest extends UnitTestCase
     }
 
     /** @test */
-    public function it_returns_valid_values_for_logQueries()
+    public function it_returns_valid_values_for_logAllQueries()
     {
         $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.enabled')
             ->andReturn(1);
-        $this->assertTrue($this->config->logQueries());
+        $this->assertTrue($this->config->logAllQueries());
 
         $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.enabled')
             ->andReturn(0);
-        $this->assertFalse($this->config->logQueries());
+        $this->assertFalse($this->config->logAllQueries());
     }
 
     /** @test */

@@ -37,7 +37,7 @@ class ServiceProviderTest extends UnitTestCase
         $provider->shouldReceive('publishes')->once()->with(
             [$configFile => config_path('sql_logger.php')]);
 
-        $config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
 
         $app->shouldNotReceive('make')->with(SqlLogger::class);
@@ -71,7 +71,7 @@ class ServiceProviderTest extends UnitTestCase
         $provider->shouldReceive('publishes')->once()->with(
             [$configFile => config_path('sql_logger.php')]);
 
-        $config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
 
         $logger = Mockery::mock(SqlLogger::class);
         $app->shouldReceive('make')->with(SqlLogger::class)->andReturn($logger);
@@ -111,7 +111,7 @@ class ServiceProviderTest extends UnitTestCase
         $provider->shouldReceive('publishes')->once()->with(
             [$configFile => config_path('sql_logger.php')]);
 
-        $config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
 
         $logger = Mockery::mock(SqlLogger::class);

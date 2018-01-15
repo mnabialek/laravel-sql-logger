@@ -64,7 +64,7 @@ class WriterTest extends UnitTestCase
     {
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
         $this->assertFileNotExists($this->directory);
@@ -78,7 +78,7 @@ class WriterTest extends UnitTestCase
     {
         $query = new SqlQuery(2, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldNotReceive('logDirectory');
         $this->assertFileNotExists($this->directory);
@@ -96,7 +96,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
@@ -124,7 +124,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
@@ -151,7 +151,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
@@ -178,7 +178,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(2, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
@@ -200,7 +200,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
@@ -224,7 +224,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
         $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
@@ -248,7 +248,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.22);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
@@ -271,7 +271,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.42);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
@@ -290,7 +290,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
@@ -314,7 +314,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(false);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
@@ -338,7 +338,7 @@ class WriterTest extends UnitTestCase
 
         $query = new SqlQuery(1, 'test', [], 5.41);
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
-        $this->config->shouldReceive('logQueries')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
