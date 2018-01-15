@@ -91,14 +91,14 @@ class ConfigTest extends UnitTestCase
     }
 
     /** @test */
-    public function it_returns_valid_values_for_separateConsoleLogs()
+    public function it_returns_valid_values_for_consoleSuffix()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.separate_console_log')
-            ->andReturn(1);
-        $this->assertTrue($this->config->separateConsoleLogs());
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.console_log_suffix')
+            ->andReturn('-artisan');
+        $this->assertSame('-artisan', $this->config->consoleSuffix());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.separate_console_log')
-            ->andReturn(0);
-        $this->assertFalse($this->config->separateConsoleLogs());
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.console_log_suffix')
+            ->andReturn('');
+        $this->assertSame('', $this->config->consoleSuffix());
     }
 }

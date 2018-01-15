@@ -99,8 +99,8 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
         $this->assertCount(1, $this->filesystem->allFiles($this->directory));
@@ -127,7 +127,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
         $this->assertFileExists($expectedFileName);
         $this->writer->save($query);
@@ -154,7 +154,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(true);
         $this->assertFileExists($expectedFileName);
         $this->writer->save($query);
@@ -181,7 +181,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldNotReceive('overrideFile');
         $this->assertFileExists($expectedFileName);
         $this->writer->save($query);
@@ -203,13 +203,13 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('consoleSuffix')->once()->withNoArgs()->andReturn('-sample');
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
         $this->assertCount(1, $this->filesystem->allFiles($this->directory));
-        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-artisan-log.sql';
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-sample-log.sql';
         $this->assertFileExists($expectedFileName);
         $this->assertSame($lineContent, file_get_contents($expectedFileName));
     }
@@ -227,7 +227,6 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
@@ -252,7 +251,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.22);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
         $this->assertCount(1, $this->filesystem->allFiles($this->directory));
@@ -294,12 +293,12 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
+        $this->config->shouldReceive('consoleSuffix')->once()->withNoArgs()->andReturn('-example');
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
         $this->assertCount(1, $this->filesystem->allFiles($this->directory));
-        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-artisan-slow-log.sql';
+        $expectedFileName = $this->directory . '/' . $now->toDateString() . '-example-slow-log.sql';
         $this->assertFileExists($expectedFileName);
         $this->assertSame($lineContent, file_get_contents($expectedFileName));
     }
@@ -318,7 +317,6 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(2)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->once()->withNoArgs()->andReturn(true);
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
@@ -342,7 +340,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('slowLogTime')->once()->withNoArgs()->andReturn(5.33);
         $this->config->shouldReceive('logDirectory')->times(3)->withNoArgs()->andReturn($this->directory);
-        $this->config->shouldReceive('separateConsoleLogs')->times(2)->withNoArgs()->andReturn(false);
+        $this->app->shouldReceive('runningInConsole')->times(2)->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('overrideFile')->once()->withNoArgs()->andReturn(false);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);

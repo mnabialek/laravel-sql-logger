@@ -15,9 +15,9 @@ return [
         'use_seconds' => env('SQL_LOGGER_USE_SECONDS', false),
 
         /*
-         * Whether artisan queries should be logged to separate files
+         * Suffix for Artisan queries logs (if it's empty same files will be used for Artisan)
          */
-        'separate_console_log' => env('SQL_LOGGER_SEPARATE_CONSOLE', false),
+        'console_log_suffix' => env('SQL_LOGGER_CONSOLE_SUFFIX', ''),
     ],
 
     'all_queries' => [

@@ -42,13 +42,13 @@ class Config
     }
 
     /**
-     * Whether console queries should be logged into separate files.
+     * Get suffix for console logs.
      *
-     * @return bool
+     * @return string
      */
-    public function separateConsoleLogs()
+    public function consoleSuffix()
     {
-        return (bool) $this->repository->get('sql_logger.general.separate_console_log');
+        return (string) $this->repository->get('sql_logger.general.console_log_suffix');
     }
 
     /**

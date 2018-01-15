@@ -106,7 +106,7 @@ class Writer
      */
     protected function suffix()
     {
-        return $this->config->separateConsoleLogs() && $this->app->runningInConsole() ? '-artisan' : '';
+        return $this->app->runningInConsole() ? $this->config->consoleSuffix() : '';
     }
 
     /**
