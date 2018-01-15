@@ -33,6 +33,12 @@ return [
          * AJAX it will override your log file in each request
          */
         'override_log' => env('SQL_LOGGER_ALL_QUERIES_OVERRIDE', false),
+
+        /*
+         * Pattern that should be matched to log query. By default all queries are logged but using
+         * as pattern for example ^#SELECT.*$#i will log only SELECT queries
+         */
+        'pattern' => '#.*#i',
     ],
 
     'slow_queries' => [
@@ -47,5 +53,11 @@ return [
          * Time of query (in milliseconds) when this query is considered as slow
          */
         'min_exec_time' => env('SQL_LOGGER_SLOW_QUERIES_MIN_EXEC_TIME', 100),
+
+        /*
+         * Pattern that should be matched to log slow query. By default all queries are logged but 
+         * using as pattern for example ^#SELECT.*$#i will log only SELECT queries
+         */
+        'pattern' => '#.*#i',
     ],
 ];

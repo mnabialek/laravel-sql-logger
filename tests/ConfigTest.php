@@ -101,4 +101,22 @@ class ConfigTest extends UnitTestCase
             ->andReturn('');
         $this->assertSame('', $this->config->consoleSuffix());
     }
+
+    /** @test */
+    public function it_returns_valid_value_for_allQueriesPattern()
+    {
+        $value = 'sample pattern';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.pattern')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->allQueriesPattern());
+    }
+
+    /** @test */
+    public function it_returns_valid_value_for_slowQueriesPattern()
+    {
+        $value = 'sample pattern';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries.pattern')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->slowQueriesPattern());
+    }
 }

@@ -72,6 +72,16 @@ class Config
     }
 
     /**
+     * Get pattern for all queries.
+     *
+     * @return string
+     */
+    public function allQueriesPattern()
+    {
+        return $this->repository->get('sql_logger.all_queries.pattern');
+    }
+
+    /**
      * Whether slow queries should be logged.
      *
      * @return bool
@@ -89,5 +99,15 @@ class Config
     public function slowLogTime()
     {
         return $this->repository->get('sql_logger.slow_queries.min_exec_time');
+    }
+
+    /**
+     * Get pattern for slow queries.
+     *
+     * @return string
+     */
+    public function slowQueriesPattern()
+    {
+        return $this->repository->get('sql_logger.slow_queries.pattern');
     }
 }
