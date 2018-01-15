@@ -27,11 +27,11 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_values_for_logQueries()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_queries')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.enabled')
             ->andReturn(1);
         $this->assertTrue($this->config->logQueries());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_queries')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.enabled')
             ->andReturn(0);
         $this->assertFalse($this->config->logQueries());
     }
@@ -39,11 +39,11 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_values_for_logSlowQueries()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_slow_queries')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries.enabled')
             ->andReturn(1);
         $this->assertTrue($this->config->logSlowQueries());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_slow_queries')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries.enabled')
             ->andReturn(0);
         $this->assertFalse($this->config->logSlowQueries());
     }
@@ -52,7 +52,7 @@ class ConfigTest extends UnitTestCase
     public function it_returns_valid_value_for_slowLogTime()
     {
         $value = '700';
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries_min_exec_time')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries.min_exec_time')
             ->andReturn($value);
         $this->assertSame($value, $this->config->slowLogTime());
     }
@@ -60,11 +60,11 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_values_for_overrideFile()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.override_log')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.override_log')
             ->andReturn(1);
         $this->assertTrue($this->config->overrideFile());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.override_log')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.override_log')
             ->andReturn(0);
         $this->assertFalse($this->config->overrideFile());
     }
@@ -73,7 +73,7 @@ class ConfigTest extends UnitTestCase
     public function it_returns_valid_value_for_logDirectory()
     {
         $value = 'sample directory';
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.directory')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.directory')
             ->andReturn($value);
         $this->assertSame($value, $this->config->logDirectory());
     }
@@ -81,11 +81,11 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_values_for_useSeconds()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.convert_to_seconds')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.use_seconds')
             ->andReturn(1);
         $this->assertTrue($this->config->useSeconds());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.convert_to_seconds')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.use_seconds')
             ->andReturn(0);
         $this->assertFalse($this->config->useSeconds());
     }
@@ -93,11 +93,11 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_values_for_separateConsoleLogs()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_console_to_separate_file')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.separate_console_log')
             ->andReturn(1);
         $this->assertTrue($this->config->separateConsoleLogs());
 
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.log_console_to_separate_file')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.separate_console_log')
             ->andReturn(0);
         $this->assertFalse($this->config->separateConsoleLogs());
     }

@@ -28,7 +28,7 @@ class Config
      */
     public function logQueries()
     {
-        return (bool) $this->repository->get('sql_logger.log_queries');
+        return (bool) $this->repository->get('sql_logger.all_queries.enabled');
     }
 
     /**
@@ -38,7 +38,7 @@ class Config
      */
     public function logSlowQueries()
     {
-        return (bool) $this->repository->get('sql_logger.log_slow_queries');
+        return (bool) $this->repository->get('sql_logger.slow_queries.enabled');
     }
 
     /**
@@ -48,7 +48,7 @@ class Config
      */
     public function slowLogTime()
     {
-        return $this->repository->get('sql_logger.slow_queries_min_exec_time');
+        return $this->repository->get('sql_logger.slow_queries.min_exec_time');
     }
 
     /**
@@ -58,7 +58,7 @@ class Config
      */
     public function overrideFile()
     {
-        return (bool) $this->repository->get('sql_logger.override_log');
+        return (bool) $this->repository->get('sql_logger.all_queries.override_log');
     }
 
     /**
@@ -68,7 +68,7 @@ class Config
      */
     public function logDirectory()
     {
-        return $this->repository->get('sql_logger.directory');
+        return $this->repository->get('sql_logger.general.directory');
     }
 
     /**
@@ -78,7 +78,7 @@ class Config
      */
     public function useSeconds()
     {
-        return (bool) $this->repository->get('sql_logger.convert_to_seconds');
+        return (bool) $this->repository->get('sql_logger.general.use_seconds');
     }
 
     /**
@@ -88,6 +88,6 @@ class Config
      */
     public function separateConsoleLogs()
     {
-        return (bool) $this->repository->get('sql_logger.log_console_to_separate_file');
+        return (bool) $this->repository->get('sql_logger.general.separate_console_log');
     }
 }
