@@ -32,8 +32,8 @@ class Formatter
     public function getLine(SqlQuery $query)
     {
         return '/* Query ' . $query->number() . ' - ' . Carbon::now()->toDateTimeString() . ' [' .
-            $this->time($query->time()) . ']' . " */\n" . $query->get() . ";\n/*" .
-            str_repeat('=', 50) . "*/\n";
+            $this->time($query->time()) . ']' . ' */' . PHP_EOL . $query->get() . ';' . PHP_EOL .
+            '/*' . str_repeat('=', 50) . '*/' . PHP_EOL;
     }
 
     /**
