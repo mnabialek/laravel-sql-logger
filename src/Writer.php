@@ -2,17 +2,10 @@
 
 namespace Mnabialek\LaravelSqlLogger;
 
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 
 class Writer
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
     /**
      * @var Formatter
      */
@@ -24,17 +17,22 @@ class Writer
     private $config;
 
     /**
+     * @var FileName
+     */
+    private $fileName;
+
+    /**
      * Writer constructor.
      *
-     * @param Application $app
      * @param Formatter $formatter
      * @param Config $config
+     * @param FileName $fileName
      */
-    public function __construct(Application $app, Formatter $formatter, Config $config)
+    public function __construct(Formatter $formatter, Config $config, FileName $fileName)
     {
-        $this->app = $app;
         $this->formatter = $formatter;
         $this->config = $config;
+        $this->fileName = $fileName;
     }
 
     /**
@@ -49,11 +47,11 @@ class Writer
         $line = $this->formatter->getLine($query);
 
         if ($this->shouldLogQuery($query)) {
-            $this->saveLine($line, $this->logName(), $this->shouldOverrideFile($query));
+            $this->saveLine($line, $this->fileName->getForAllQueries(), $this->shouldOverrideFile($query));
         }
 
         if ($this->shouldLogSlowQuery($query)) {
-            $this->saveLine($line, $this->slowLogName());
+            $this->saveLine($line, $this->fileName->getForSlowQueries());
         }
     }
 
@@ -77,36 +75,6 @@ class Writer
     protected function directory()
     {
         return rtrim($this->config->logDirectory(), '\\/');
-    }
-
-    /**
-     * Get log name.
-     *
-     * @return string
-     */
-    protected function logName()
-    {
-        return Carbon::now()->format('Y-m-d') . $this->suffix() . '-log.sql';
-    }
-
-    /**
-     * Get slow log name.
-     *
-     * @return string
-     */
-    protected function slowLogName()
-    {
-        return Carbon::now()->format('Y-m-d') . $this->suffix() . '-slow-log.sql';
-    }
-
-    /**
-     * Get file suffix.
-     *
-     * @return string
-     */
-    protected function suffix()
-    {
-        return $this->app->runningInConsole() ? $this->config->consoleSuffix() : '';
     }
 
     /**
