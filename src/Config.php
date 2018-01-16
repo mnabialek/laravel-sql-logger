@@ -52,6 +52,16 @@ class Config
     }
 
     /**
+     * Get file extension for logs.
+     *
+     * @return string
+     */
+    public function fileExtension()
+    {
+        return $this->repository->get('sql_logger.general.extension');
+    }
+
+    /**
      * Whether all queries should be logged.
      *
      * @return bool
@@ -82,6 +92,16 @@ class Config
     }
 
     /**
+     * Get file name (without extension) for all queries.
+     * 
+     * @return string
+     */
+    public function allQueriesFileName()
+    {
+        return $this->repository->get('sql_logger.all_queries.file_name');
+    }
+
+    /**
      * Whether slow queries should be logged.
      *
      * @return bool
@@ -109,5 +129,15 @@ class Config
     public function slowQueriesPattern()
     {
         return $this->repository->get('sql_logger.slow_queries.pattern');
+    }
+
+    /**
+     * Get file name (without extension) for slow queries.
+     *
+     * @return string
+     */
+    public function slowQueriesFileName()
+    {
+        return $this->repository->get('sql_logger.slow_queries.file_name');
     }
 }

@@ -18,6 +18,11 @@ return [
          * Suffix for Artisan queries logs (if it's empty same files will be used for Artisan)
          */
         'console_log_suffix' => env('SQL_LOGGER_CONSOLE_SUFFIX', ''),
+
+        /*
+         * Extension for log files
+         */
+        'extension' => env('SQL_LOGGER_LOG_EXTENSION', '.log'),
     ],
 
     'all_queries' => [
@@ -36,9 +41,15 @@ return [
 
         /*
          * Pattern that should be matched to log query. By default all queries are logged but using
-         * as pattern for example ^#SELECT.*$#i will log only SELECT queries
+         * as pattern for example #^SELECT.*$#i will log only SELECT queries
          */
-        'pattern' => '#.*#i',
+        'pattern' => env('SQL_LOGGER_ALL_QUERIES_PATTERN', '#.*#i'),
+
+        /*
+         * Log file name without extension - elements between [ and ] characters will be parsed 
+         * according to format used by http://php.net/manual/en/function.date.php
+         */
+        'file_name' => env('SQL_LOGGER_ALL_QUERIES_FILE_NAME', '[Y-m-d]-log'),
     ],
 
     'slow_queries' => [
@@ -56,8 +67,14 @@ return [
 
         /*
          * Pattern that should be matched to log slow query. By default all queries are logged but 
-         * using as pattern for example ^#SELECT.*$#i will log only SELECT queries
+         * using as pattern for example #^SELECT.*$#i will log only SELECT queries
          */
-        'pattern' => '#.*#i',
+        'pattern' => env('SQL_LOGGER_SLOW_QUERIES_PATTERN', '#.*#i'),
+
+        /*
+         * Slow log file name without extension - elements between [ and ] characters will be parsed 
+         * according to format used by http://php.net/manual/en/function.date.php
+         */
+        'file_name' => env('SQL_LOGGER_SLOW_QUERIES_FILE_NAME', '[Y-m-d]-slow-log'),
     ],
 ];

@@ -119,4 +119,31 @@ class ConfigTest extends UnitTestCase
             ->andReturn($value);
         $this->assertSame($value, $this->config->slowQueriesPattern());
     }
+
+    /** @test */
+    public function it_returns_valid_file_extension()
+    {
+        $value = '.sql';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.general.extension')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->fileExtension());
+    }
+
+    /** @test */
+    public function it_returns_valid_all_queries_file_name()
+    {
+        $value = '[Y-m-d]-sample';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.all_queries.file_name')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->allQueriesFileName());
+    }
+
+    /** @test */
+    public function it_returns_valid_slow_queries_file_name()
+    {
+        $value = '[Y-m-d]-sample';
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.slow_queries.file_name')
+            ->andReturn($value);
+        $this->assertSame($value, $this->config->slowQueriesFileName());
+    }
 }
