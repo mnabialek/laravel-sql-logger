@@ -22,7 +22,7 @@ return [
         /*
          * Extension for log files
          */
-        'extension' => env('SQL_LOGGER_LOG_EXTENSION', '.log'),
+        'extension' => env('SQL_LOGGER_LOG_EXTENSION', '.sql'),
     ],
 
     'all_queries' => [
