@@ -2,7 +2,10 @@
 
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
+use ArrayAccess;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Formatter;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
@@ -11,10 +14,16 @@ use Mockery;
 class FormatterTest extends UnitTestCase
 {
     /** @test */
-    public function it_formats_line_in_walid_way_when_milliseconds_are_used()
+    public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
+        $app = Mockery::mock(Application::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
+        $request = Mockery::mock(Request::class);
+        $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
+        $request->shouldReceive('method')->once()->withNoArgs()->andReturn('DELETE');
+        $request->shouldReceive('fullUrl')->once()->withNoArgs()->andReturn('http://example.com/test');
 
         $now = '2015-03-04 08:12:07';
         Carbon::setTestNow($now);
@@ -27,11 +36,12 @@ class FormatterTest extends UnitTestCase
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
 
-        $formatter = new Formatter($config);
+        $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
 
         $expected = <<<EOT
-/* Query {$number} - {$now} [{$time}ms] */
+/* Origin (request): DELETE http://example.com/test
+   Query {$number} - {$now} [{$time}ms] */
 {$sql};
 /*==================================================*/
 
@@ -41,10 +51,16 @@ EOT;
     }
 
     /** @test */
-    public function it_formats_line_in_walid_way_when_seconds_are_used()
+    public function it_formats_line_in_valid_way_when_seconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
+        $app = Mockery::mock(Application::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(true);
+        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
+        $request = Mockery::mock(Request::class);
+        $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
+        $request->shouldReceive('method')->once()->withNoArgs()->andReturn('GET');
+        $request->shouldReceive('fullUrl')->once()->withNoArgs()->andReturn('https://example.com/test');
 
         $now = '2015-03-04 08:12:07';
         Carbon::setTestNow($now);
@@ -57,11 +73,84 @@ EOT;
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
 
-        $formatter = new Formatter($config);
+        $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
 
         $expected = <<<EOT
-/* Query {$number} - {$now} [0.61724s] */
+/* Origin (request): GET https://example.com/test
+   Query {$number} - {$now} [0.61724s] */
+{$sql};
+/*==================================================*/
+
+EOT;
+
+        $this->assertSame($expected, $result);
+    }
+
+    /** @test */
+    public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console()
+    {
+        $config = Mockery::mock(Config::class);
+        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
+        $request = Mockery::mock(Request::class);
+        $app->shouldReceive('offsetGet')->once()->with('request')->andReturn($request);
+        $request->shouldReceive('server')->once()->with('argv', [])->andReturn('php artisan test');
+
+        $now = '2015-03-04 08:12:07';
+        Carbon::setTestNow($now);
+
+        $query = Mockery::mock(SqlQuery::class);
+        $number = 434;
+        $time = 617.24;
+        $sql = 'SELECT * FROM somewhere';
+        $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
+        $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
+        $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+
+        $formatter = new Formatter($app, $config);
+        $result = $formatter->getLine($query);
+
+        $expected = <<<EOT
+/* Origin (console): php artisan test
+   Query {$number} - {$now} [{$time}ms] */
+{$sql};
+/*==================================================*/
+
+EOT;
+
+        $this->assertSame($expected, $result);
+    }
+
+    /** @test */
+    public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console_for_array()
+    {
+        $config = Mockery::mock(Config::class);
+        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
+        $request = Mockery::mock(Request::class);
+        $app->shouldReceive('offsetGet')->once()->with('request')->andReturn($request);
+        $request->shouldReceive('server')->once()->with('argv', [])->andReturn(['php','artisan','test']);
+
+        $now = '2015-03-04 08:12:07';
+        Carbon::setTestNow($now);
+
+        $query = Mockery::mock(SqlQuery::class);
+        $number = 434;
+        $time = 617.24;
+        $sql = 'SELECT * FROM somewhere';
+        $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
+        $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
+        $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+
+        $formatter = new Formatter($app, $config);
+        $result = $formatter->getLine($query);
+
+        $expected = <<<EOT
+/* Origin (console): php artisan test
+   Query {$number} - {$now} [{$time}ms] */
 {$sql};
 /*==================================================*/
 
