@@ -43,11 +43,43 @@ class SqlQueryTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_query_with_replaced_bindings()
     {
-        $sql = "SELECT * FROM tests WHERE a = ? AND CONCAT(?, '%'" . "\n" . ', ?) = ?';
-        $bindings = ["'test", Carbon::yesterday(), new \DateTime('tomorrow'), 453];
+        $sql = "SELECT * FROM tests WHERE a = ? AND CONCAT(?, '%'" . "\n" . ', ?) = ? AND column = ?';
+        $bindings = ["'test", Carbon::yesterday(), new \DateTime('tomorrow'), 453, 67.23];
         $query = new SqlQuery(56, $sql, $bindings, 130);
         $this->assertSame("SELECT * FROM tests WHERE a = '\'test' AND CONCAT('" .
             $bindings[1]->toDateTimeString() . "', '%' , '" .
-            $bindings[2]->format('Y-m-d H:i:s') . "') = '453'", $query->get());
+            $bindings[2]->format('Y-m-d H:i:s') . "') = 453 AND column = 67.23", $query->get());
+    }
+
+    /** @test */
+    public function it_returns_valid_query_when_question_mark_in_quotes()
+    {
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = '?' AND b = "?" AND c = ? AND D = '\\?' AND e = "\"?" AND f = ?;
+EOF;
+        $bindings = ["'test", 52];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = '?' AND b = "?" AND c = '\'test' AND D = '\\?' AND e = "\"?" AND f = 52;
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
+
+    /** @test */
+    public function it_returns_valid_query_for_named_bindings()
+    {
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = ? AND b = :email AND c = ? AND D = :something AND true;
+EOF;
+        $bindings = ["'test", 52, 'example', 53, 77];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = '\'test' AND b = 52 AND c = 'example' AND D = 53 AND true;
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
     }
 }

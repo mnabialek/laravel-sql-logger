@@ -2,10 +2,12 @@
 
 namespace Mnabialek\LaravelSqlLogger\Objects;
 
-use DateTime;
+use Mnabialek\LaravelSqlLogger\Objects\Concerns\ReplacesBindings;
 
 class SqlQuery
 {
+    use ReplacesBindings;
+
     /**
      * @var int
      */
@@ -89,27 +91,18 @@ class SqlQuery
      */
     public function get()
     {
-        return vsprintf(str_replace(['%', '?', "\n"], ['%%', "'%s'", ' '], $this->sql),
-            $this->formatBindings($this->bindings));
+        return $this->removeNewLines($this->replaceBindings($this->sql, $this->bindings));
     }
 
     /**
-     * Format bindings values.
-     * 
-     * @param array $bindings
+     * Remove new lines from SQL to keep it in single line if possible.
      *
-     * @return array
+     * @param string $sql
+     *
+     * @return string
      */
-    protected function formatBindings($bindings)
+    protected function removeNewLines($sql)
     {
-        foreach ($bindings as $key => $binding) {
-            if ($binding instanceof DateTime) {
-                $bindings[$key] = $binding->format('Y-m-d H:i:s');
-            } elseif (is_string($binding)) {
-                $bindings[$key] = str_replace("'", "\\'", $binding);
-            }
-        }
-
-        return $bindings;
+        return preg_replace($this->wrapRegex($this->notInsideQuotes('\v', false)), ' ', $sql);
     }
 }
