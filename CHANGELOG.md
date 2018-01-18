@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0] - Unreleased
+
+### Added
+- Log contain now origin (HTTP action or console command)
+- Support for named parameters in queries
+- Option to set filename and extension for logs
+- Option to choose which queries will be tracked
+
+### Changed
+- Changed configuration file structure
+- Changed ENV variables names
+- Changed structure of log files (added origin)
+- Changes in generating queries (numbers are not quoted any more, parameters in quotes won't be converted)
+- Complete package code rewrite with unit tests
+
 ## [1.1.4] - 2018-01-18
 ### Added
 - Added CHANGELOG to keep tracking of changes
