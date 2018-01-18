@@ -66,4 +66,8 @@ when developing your application to verify whether your queries are valid and to
     
 6. Make sure directory specified in `.env` file exists in storage path and you have valid file permissions to create and modify files in this directory (If it does not exist this package will automatically create it when needed but it's recommended to create it manually with valid file permissions)
 
-7. Make sure on live server you will set logging SQL queries to false in your `.env` file. This package is recommended to be used only for development to not impact production application performance. 
+7. Make sure on live server you will set logging SQL queries to false in your `.env` file. This package is recommended to be used only for development to not impact production application performance.
+
+### Changes
+
+All changes are listed in [Changelog](CHANGELOG.md)
