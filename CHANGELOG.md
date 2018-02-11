@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0] - Unreleased
+## [2.0] - 2018-02-11
 
 ### Added
 - Log contain now origin (HTTP action or console command)
