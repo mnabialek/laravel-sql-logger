@@ -16,14 +16,31 @@ trait ReplacesBindings
      */
     protected function replaceBindings($sql, array $bindings)
     {
-        $regex = $this->getRegex();
+        $generalRegex = $this->getRegex();
 
         foreach ($this->formatBindings($bindings) as $key => $binding) {
             $value = is_numeric($binding) ? $binding : "'" . $binding . "'";
+            $regex = is_numeric($key) ? $generalRegex : $this->getNamedParameterRegex($key);
             $sql = preg_replace($regex, $value, $sql, 1);
         }
 
         return $sql;
+    }
+
+    /**
+     * Get regex to be used for named parameter with given name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getNamedParameterRegex($name)
+    {
+        if (mb_substr($name, 0, 1) == ':') {
+            $name = mb_substr($name, 1);
+        }
+
+        return $this->wrapRegex($this->notInsideQuotes('\:' . preg_quote($name), false));
     }
 
     /**
@@ -48,11 +65,16 @@ trait ReplacesBindings
 
     /**
      * Get regex to be used to replace bindings.
+     *
      * @return string
      */
     protected function getRegex()
     {
-        return $this->wrapRegex($this->notInsideQuotes('?') . '|' . $this->notInsideQuotes('\:\w+', false));
+        return $this->wrapRegex(
+            $this->notInsideQuotes('?')
+            . '|' .
+            $this->notInsideQuotes('\:\w+', false)
+        );
     }
 
     /**
@@ -81,6 +103,11 @@ trait ReplacesBindings
             $string = preg_quote($string);
         }
 
-        return '(?:"[^"]*[^\\\]"(*SKIP)(*F)|' . $string . ')|(?:\'[^\']*[^\\\]\'(*SKIP)(*F)|' . $string . ')';
+        return
+            // double quotes - ignore "" and everything inside quotes for example " abc \"err "
+            '(?:""|"(?:[^"]|\\")*?[^\\\]")(*SKIP)(*F)|' . $string .
+            '|' .
+            // single quotes - ignore '' and everything inside quotes for example ' abc \'err '
+            '(?:\\\'\\\'|\'(?:[^\']|\\\')*?[^\\\]\')(*SKIP)(*F)|' . $string;
     }
 }

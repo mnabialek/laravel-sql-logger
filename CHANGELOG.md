@@ -2,8 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0] - 2018-02-11
+## [2.0.1] - 2018-03-23
+### Fixed
+- Fix for named parameters when binding order is different than order of parameters
+- Fixes for replacing bindings for named parameters
 
+## [2.0] - 2018-02-11
 ### Added
 - Log contain now origin (HTTP action or console command)
 - Support for named parameters in queries

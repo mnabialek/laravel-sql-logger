@@ -82,4 +82,53 @@ EOF;
 
         $this->assertSame($expectedSql, $query->get());
     }
+
+    /** @test */
+    public function it_returns_valid_query_for_multiple_named_bindings_in_other_order()
+    {
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = :email AND b = :something AND c = :test AND true;
+EOF;
+        $bindings = [':test' => 'other value', ':email' => 'test@example.com', ':something' => 'test'];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = 'test@example.com' AND b = 'test' AND c = 'other value' AND true;
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
+
+    /** @test */
+    public function it_returns_valid_query_when_empty_string_as_column_and_date_binding()
+    {
+        $sql = <<<EOF
+SELECT id, '' AS title FROM test WHERE created_at >= :from AND created_at <= :to
+EOF;
+        $bindings = [':from' => '2018-03-19 21:01:01', ':to' => '2018-03-19 22:01:01'];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT id, '' AS title FROM test WHERE created_at >= '2018-03-19 21:01:01' AND created_at <= '2018-03-19 22:01:01'
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
+
+    /** @test */
+    public function it_handles_both_colon_and_non_colon_parameters()
+    {
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = :email AND b = :something;
+EOF;
+        // one binding name stats with colon, other without it - both should work
+        $bindings = [':email' => 'test@example.com', 'something' => 'test'];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = 'test@example.com' AND b = 'test';
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
 }
