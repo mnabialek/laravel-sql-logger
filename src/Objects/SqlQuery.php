@@ -91,18 +91,6 @@ class SqlQuery
      */
     public function get()
     {
-        return $this->removeNewLines($this->replaceBindings($this->sql, $this->bindings));
-    }
-
-    /**
-     * Remove new lines from SQL to keep it in single line if possible.
-     *
-     * @param string $sql
-     *
-     * @return string
-     */
-    protected function removeNewLines($sql)
-    {
-        return preg_replace($this->wrapRegex($this->notInsideQuotes('\v', false)), ' ', $sql);
+        return $this->replaceBindings($this->sql, $this->bindings);
     }
 }

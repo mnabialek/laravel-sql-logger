@@ -43,12 +43,20 @@ class SqlQueryTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_query_with_replaced_bindings()
     {
-        $sql = "SELECT * FROM tests WHERE a = ? AND CONCAT(?, '%'" . "\n" . ', ?) = ? AND column = ?';
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = ? AND CONCAT(?, '%'
+ , ?) = ? AND column = ?
+EOF;
+
         $bindings = ["'test", Carbon::yesterday(), new \DateTime('tomorrow'), 453, 67.23];
         $query = new SqlQuery(56, $sql, $bindings, 130);
-        $this->assertSame("SELECT * FROM tests WHERE a = '\'test' AND CONCAT('" .
-            $bindings[1]->toDateTimeString() . "', '%' , '" .
-            $bindings[2]->format('Y-m-d H:i:s') . "') = 453 AND column = 67.23", $query->get());
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = '\'test' AND CONCAT('{$bindings[1]->toDateTimeString()}', '%'
+ , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = 67.23
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
     }
 
     /** @test */

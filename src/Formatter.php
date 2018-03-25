@@ -4,10 +4,13 @@ namespace Mnabialek\LaravelSqlLogger;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
+use Mnabialek\LaravelSqlLogger\Objects\Concerns\ReplacesBindings;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 
 class Formatter
 {
+    use ReplacesBindings;
+
     /**
      * @var Application
      */
@@ -91,7 +94,7 @@ class Formatter
      */
     protected function queryLine(SqlQuery $query)
     {
-        return $query->get() . ';';
+        return $this->format($query->get()) . ';';
     }
 
     /**
@@ -128,5 +131,29 @@ class Formatter
     protected function separatorLine()
     {
         return '/*' . str_repeat('=', 50) . '*/';
+    }
+
+    /**
+     * Format given query.
+     * 
+     * @param string $query
+     *
+     * @return string
+     */
+    protected function format($query)
+    {
+        return $this->removeNewLines($query);
+    }
+
+    /**
+     * Remove new lines from SQL to keep it in single line if possible.
+     *
+     * @param string $sql
+     *
+     * @return string
+     */
+    protected function removeNewLines($sql)
+    {
+        return preg_replace($this->wrapRegex($this->notInsideQuotes('\v', false)), ' ', $sql);
     }
 }
