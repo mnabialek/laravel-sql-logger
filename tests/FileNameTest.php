@@ -3,7 +3,7 @@
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\FileName;
 use Mockery;
@@ -11,7 +11,7 @@ use Mockery;
 class FileNameTest extends UnitTestCase
 {
     /**
-     * @var Application|\Mockery\Mock
+     * @var Container|\Mockery\Mock
      */
     protected $app;
 
@@ -28,7 +28,7 @@ class FileNameTest extends UnitTestCase
     protected function setUp()
     {
         Carbon::setTestNow('2015-03-07 08:16:09');
-        $this->app = Mockery::mock(Application::class);
+        $this->app = Mockery::mock(Container::class);
         $this->config = Mockery::mock(Config::class);
         $this->filename = new FileName($this->app, $this->config);
     }

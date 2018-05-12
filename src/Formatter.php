@@ -3,7 +3,7 @@
 namespace Mnabialek\LaravelSqlLogger;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Mnabialek\LaravelSqlLogger\Objects\Concerns\ReplacesBindings;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 
@@ -12,7 +12,7 @@ class Formatter
     use ReplacesBindings;
 
     /**
-     * @var Application
+     * @var Container
      */
     private $app;
 
@@ -24,10 +24,10 @@ class Formatter
     /**
      * Formatter constructor.
      *
-     * @param Application $app
+     * @param Container $app
      * @param Config $config
      */
-    public function __construct(Application $app, Config $config)
+    public function __construct(Container $app, Config $config)
     {
         $this->app = $app;
         $this->config = $config;

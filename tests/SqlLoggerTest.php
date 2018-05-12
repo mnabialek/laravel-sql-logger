@@ -3,7 +3,7 @@
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use ArrayAccess;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mnabialek\LaravelSqlLogger\Query;
 use Mnabialek\LaravelSqlLogger\SqlLogger;
@@ -14,7 +14,7 @@ use stdClass;
 class SqlLoggerTest extends UnitTestCase
 {
     /**
-     * @var Application|\Mockery\Mock
+     * @var Container|\Mockery\Mock
      */
     private $app;
 
@@ -35,7 +35,7 @@ class SqlLoggerTest extends UnitTestCase
 
     protected function setUp()
     {
-        $this->app = Mockery::mock(Application::class, ArrayAccess::class);
+        $this->app = Mockery::mock(Container::class, ArrayAccess::class);
         $this->query = Mockery::mock(Query::class);
         $this->writer = Mockery::mock(Writer::class);
         $this->logger = new SqlLogger($this->app, $this->query, $this->writer);

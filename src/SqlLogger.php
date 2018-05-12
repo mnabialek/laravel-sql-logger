@@ -3,12 +3,12 @@
 namespace Mnabialek\LaravelSqlLogger;
 
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 
 class SqlLogger
 {
     /**
-     * @var Application
+     * @var Container
      */
     private $app;
 
@@ -32,11 +32,11 @@ class SqlLogger
     /**
      * SqlLogger constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Container\Container $app
      * @param Query $query
      * @param Writer $writer
      */
-    public function __construct(Application $app, Query $query, Writer $writer)
+    public function __construct(Container $app, Query $query, Writer $writer)
     {
         $this->app = $app;
         $this->query = $query;

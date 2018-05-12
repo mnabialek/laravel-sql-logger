@@ -3,7 +3,6 @@
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\DatabaseManager;
 use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Providers\ServiceProvider;
@@ -15,7 +14,7 @@ class ServiceProviderTest extends UnitTestCase
     /** @test */
     public function it_merges_config_and_publishes_when_nothing_should_be_logged()
     {
-        $app = Mockery::mock(Application::class, \ArrayAccess::class);
+        $app = Mockery::mock(Container::class, \ArrayAccess::class);
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
 
@@ -49,7 +48,7 @@ class ServiceProviderTest extends UnitTestCase
     /** @test */
     public function it_starts_listening_to_queries_when_normal_queries_should_be_logged()
     {
-        $app = Mockery::mock(Application::class, \ArrayAccess::class);
+        $app = Mockery::mock(Container::class, \ArrayAccess::class);
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
 
@@ -89,7 +88,7 @@ class ServiceProviderTest extends UnitTestCase
     /** @test */
     public function it_starts_listening_to_queries_when_slow_queries_should_be_logged()
     {
-        $app = Mockery::mock(Application::class, \ArrayAccess::class);
+        $app = Mockery::mock(Container::class, \ArrayAccess::class);
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
 
@@ -130,7 +129,7 @@ class ServiceProviderTest extends UnitTestCase
     /** @test */
     public function it_uses_valid_listening_closure()
     {
-        $app = Mockery::mock(Application::class, \ArrayAccess::class)->shouldIgnoreMissing(['make']);
+        $app = Mockery::mock(Container::class, \ArrayAccess::class)->shouldIgnoreMissing(['make']);
 
         $class = new class($app) extends ServiceProvider {
             public function getClosureResult($sqlLogger)

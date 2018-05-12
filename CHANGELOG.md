@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2] - 2018-05-12
+### Fixed
+- Fix support for Lumen
+
 ## [2.0.1] - 2018-03-23
 ### Fixed
 - Fix for named parameters when binding order is different than order of parameters

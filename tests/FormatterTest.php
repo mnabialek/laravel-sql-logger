@@ -4,7 +4,7 @@ namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use ArrayAccess;
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Formatter;
@@ -17,7 +17,7 @@ class FormatterTest extends UnitTestCase
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
@@ -55,7 +55,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_seconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
@@ -93,7 +93,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $request = Mockery::mock(Request::class);
@@ -129,7 +129,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console_for_array()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $request = Mockery::mock(Request::class);
@@ -169,7 +169,7 @@ EOT;
     public function it_replaces_new_lines_in_query_by_spaces()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Application::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
