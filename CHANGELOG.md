@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3] - 2018-06-13
+### Changed
+- Null values are now displayed as **null** instead of empty strings
+
 ## [2.0.2] - 2018-05-12
 ### Fixed
 - Fix support for Lumen

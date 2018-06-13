@@ -139,4 +139,21 @@ EOF;
 
         $this->assertSame($expectedSql, $query->get());
     }
+
+    /** @test */
+    public function it_leaves_null_values_not_changed()
+    {
+        $sql = <<<EOF
+UPDATE tests SET a = :email, b = :something WHERE id=:id;
+EOF;
+
+        $bindings = [':email' => 'test@example.com', 'something' => null, 'id' => 5];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+UPDATE tests SET a = 'test@example.com', b = null WHERE id=5;
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
 }

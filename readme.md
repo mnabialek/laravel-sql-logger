@@ -88,6 +88,10 @@ Using this package is free of charge, however to keep it up-to-date and add new 
 
 When upgrading from `1.*` version you should remove current `sql_logger.php` config file and replace this with new one (see installation step). You should also use new variables in `.env` file (old won't be used).
 
+### Authors
+
+Author of this awesome package is **[Marcin Nabiałek](http://marcin.nabialek.org/en/)**  and [Contributors](https://github.com/mnabialek/laravel-sql-logger/graphs/contributors)
+
 ### Changes
 
 All changes are listed in [Changelog](CHANGELOG.md)

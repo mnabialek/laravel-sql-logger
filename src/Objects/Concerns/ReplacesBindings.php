@@ -19,12 +19,27 @@ trait ReplacesBindings
         $generalRegex = $this->getRegex();
 
         foreach ($this->formatBindings($bindings) as $key => $binding) {
-            $value = is_numeric($binding) ? $binding : "'" . $binding . "'";
             $regex = is_numeric($key) ? $generalRegex : $this->getNamedParameterRegex($key);
-            $sql = preg_replace($regex, $value, $sql, 1);
+            $sql = preg_replace($regex, $this->value($binding), $sql, 1);
         }
 
         return $sql;
+    }
+
+    /**
+     * Get final value that will be displayed in query.
+     *
+     * @param mixed $value
+     *
+     * @return int|string
+     */
+    protected function value($value)
+    {
+        if ($value === null) {
+            return 'null';
+        }
+
+        return is_numeric($value) ? $value : "'" . $value . "'";
     }
 
     /**
