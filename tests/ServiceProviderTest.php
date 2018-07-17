@@ -31,10 +31,13 @@ class ServiceProviderTest extends UnitTestCase
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
-            $configFile, 'sql_logger');
+            $configFile,
+            'sql_logger'
+        );
 
         $provider->shouldReceive('publishes')->once()->with(
-            [$configFile => config_path('sql_logger.php')]);
+            [$configFile => config_path('sql_logger.php')]
+        );
 
         $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
@@ -65,10 +68,13 @@ class ServiceProviderTest extends UnitTestCase
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
-            $configFile, 'sql_logger');
+            $configFile,
+            'sql_logger'
+        );
 
         $provider->shouldReceive('publishes')->once()->with(
-            [$configFile => config_path('sql_logger.php')]);
+            [$configFile => config_path('sql_logger.php')]
+        );
 
         $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
 
@@ -105,10 +111,13 @@ class ServiceProviderTest extends UnitTestCase
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
-            $configFile, 'sql_logger');
+            $configFile,
+            'sql_logger'
+        );
 
         $provider->shouldReceive('publishes')->once()->with(
-            [$configFile => config_path('sql_logger.php')]);
+            [$configFile => config_path('sql_logger.php')]
+        );
 
         $config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);

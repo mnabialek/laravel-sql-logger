@@ -112,8 +112,11 @@ class Writer
      */
     protected function saveLine($line, $fileName, $override = false)
     {
-        file_put_contents($this->directory() . DIRECTORY_SEPARATOR . $fileName,
-            $line, $override ? 0 : FILE_APPEND);
+        file_put_contents(
+            $this->directory() . DIRECTORY_SEPARATOR . $fileName,
+            $line,
+            $override ? 0 : FILE_APPEND
+        );
     }
 
     /**
