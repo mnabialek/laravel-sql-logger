@@ -146,4 +146,16 @@ class ConfigTest extends UnitTestCase
             ->andReturn($value);
         $this->assertSame($value, $this->config->slowQueriesFileName());
     }
+
+    /** @test */
+    public function it_returns_valid_values_for_newLinesToSpaces()
+    {
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.formatting.new_lines_to_spaces')
+            ->andReturn(true);
+        $this->assertTrue($this->config->newLinesToSpaces());
+
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.formatting.new_lines_to_spaces')
+            ->andReturn(false);
+        $this->assertFalse($this->config->newLinesToSpaces());
+    }
 }

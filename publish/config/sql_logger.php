@@ -25,6 +25,13 @@ return [
         'extension' => env('SQL_LOGGER_LOG_EXTENSION', '.sql'),
     ],
 
+    'formatting' => [
+        /*
+         * Whether new lines should be replaced by spaces (to keep query in single line)
+         */
+        'new_lines_to_spaces' => env('SQL_LOGGER_FORMAT_NEW_LINES_TO_SPACES', false),
+    ],
+
     'all_queries' => [
         /*
          * Whether all SQL queries should be logged
@@ -46,7 +53,7 @@ return [
         'pattern' => env('SQL_LOGGER_ALL_QUERIES_PATTERN', '#.*#i'),
 
         /*
-         * Log file name without extension - elements between [ and ] characters will be parsed 
+         * Log file name without extension - elements between [ and ] characters will be parsed
          * according to format used by http://php.net/manual/en/function.date.php
          */
         'file_name' => env('SQL_LOGGER_ALL_QUERIES_FILE_NAME', '[Y-m-d]-log'),
@@ -66,13 +73,13 @@ return [
         'min_exec_time' => env('SQL_LOGGER_SLOW_QUERIES_MIN_EXEC_TIME', 100),
 
         /*
-         * Pattern that should be matched to log slow query. By default all queries are logged but 
+         * Pattern that should be matched to log slow query. By default all queries are logged but
          * using as pattern for example #^SELECT.*$#i will log only SELECT queries
          */
         'pattern' => env('SQL_LOGGER_SLOW_QUERIES_PATTERN', '#.*#i'),
 
         /*
-         * Slow log file name without extension - elements between [ and ] characters will be parsed 
+         * Slow log file name without extension - elements between [ and ] characters will be parsed
          * according to format used by http://php.net/manual/en/function.date.php
          */
         'file_name' => env('SQL_LOGGER_SLOW_QUERIES_FILE_NAME', '[Y-m-d]-slow-log'),

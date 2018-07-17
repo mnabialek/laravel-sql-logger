@@ -135,7 +135,7 @@ class Formatter
 
     /**
      * Format given query.
-     * 
+     *
      * @param string $query
      *
      * @return string
@@ -154,6 +154,10 @@ class Formatter
      */
     protected function removeNewLines($sql)
     {
+        if (! $this->config->newLinesToSpaces()) {
+            return $sql;
+        }
+
         return preg_replace($this->wrapRegex($this->notInsideQuotes('\v', false)), ' ', $sql);
     }
 }

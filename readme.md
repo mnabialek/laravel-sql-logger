@@ -72,6 +72,7 @@ Using this package is free of charge, however to keep it up-to-date and add new 
     SQL_LOGGER_SLOW_QUERIES_MIN_EXEC_TIME=100
     SQL_LOGGER_SLOW_QUERIES_PATTERN="#.*#i"
     SQL_LOGGER_SLOW_QUERIES_FILE_NAME="[Y-m-d]-slow-log"
+    SQL_LOGGER_FORMAT_NEW_LINES_TO_SPACES=false
     ```
     
     and adjust values to your needs. You can skip variables for which you want to use default values. 

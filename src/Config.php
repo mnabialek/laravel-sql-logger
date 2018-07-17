@@ -93,7 +93,7 @@ class Config
 
     /**
      * Get file name (without extension) for all queries.
-     * 
+     *
      * @return string
      */
     public function allQueriesFileName()
@@ -139,5 +139,15 @@ class Config
     public function slowQueriesFileName()
     {
         return $this->repository->get('sql_logger.slow_queries.file_name');
+    }
+
+    /**
+     * Whether new lines should be converted to spaces.
+     *
+     * @return string
+     */
+    public function newLinesToSpaces()
+    {
+        return $this->repository->get('sql_logger.formatting.new_lines_to_spaces');
     }
 }

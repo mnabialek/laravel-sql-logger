@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2018-07-17
+### Added
+- Option whether new lines are converted to spaces
+
+### Changed
+- Don't convert new lines to spaces by default
+
 ## [2.0.3] - 2018-06-13
 ### Changed
 - Null values are now displayed as **null** instead of empty strings

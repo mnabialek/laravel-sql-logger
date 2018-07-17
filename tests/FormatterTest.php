@@ -19,6 +19,7 @@ class FormatterTest extends UnitTestCase
         $config = Mockery::mock(Config::class);
         $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
         $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
@@ -57,6 +58,7 @@ EOT;
         $config = Mockery::mock(Config::class);
         $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(true);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
         $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
@@ -95,6 +97,7 @@ EOT;
         $config = Mockery::mock(Config::class);
         $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $request = Mockery::mock(Request::class);
         $app->shouldReceive('offsetGet')->once()->with('request')->andReturn($request);
@@ -131,6 +134,7 @@ EOT;
         $config = Mockery::mock(Config::class);
         $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
         $request = Mockery::mock(Request::class);
         $app->shouldReceive('offsetGet')->once()->with('request')->andReturn($request);
@@ -166,11 +170,12 @@ EOT;
     }
 
     /** @test */
-    public function it_replaces_new_lines_in_query_by_spaces()
+    public function it_replaces_new_lines_in_query_by_spaces_when_config_set_to_true()
     {
         $config = Mockery::mock(Config::class);
         $app = Mockery::mock(Container::class, ArrayAccess::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
         $request = Mockery::mock(Request::class);
         $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
@@ -192,6 +197,56 @@ SQL;
 
         $expectedSql = <<<SQL
 SELECT * FROM  somewhere WHERE name = '
+'
+SQL;
+
+        $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
+        $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
+        $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+
+        $formatter = new Formatter($app, $config);
+        $result = $formatter->getLine($query);
+
+        $expected = <<<EOT
+/* Origin (request): DELETE http://example.com/test
+   Query {$number} - {$now} [{$time}ms] */
+{$expectedSql};
+/*==================================================*/
+
+EOT;
+
+        $this->assertSame($expected, $result);
+    }
+
+    /** @test */
+    public function it_does_not_replace_new_lines_in_query_when_config_set_to_false()
+    {
+        $config = Mockery::mock(Config::class);
+        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
+        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(false);
+        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
+        $request = Mockery::mock(Request::class);
+        $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
+        $request->shouldReceive('method')->once()->withNoArgs()->andReturn('DELETE');
+        $request->shouldReceive('fullUrl')->once()->withNoArgs()
+            ->andReturn('http://example.com/test');
+
+        $now = '2015-03-04 08:12:07';
+        Carbon::setTestNow($now);
+
+        $query = Mockery::mock(SqlQuery::class);
+        $number = 434;
+        $time = 617.24;
+        $sql = <<<SQL
+SELECT * FROM 
+somewhere WHERE name = '
+'
+SQL;
+
+        $expectedSql = <<<SQL
+SELECT * FROM 
+somewhere WHERE name = '
 '
 SQL;
 
