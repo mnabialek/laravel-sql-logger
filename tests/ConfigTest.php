@@ -162,7 +162,7 @@ class ConfigTest extends UnitTestCase
     /** @test */
     public function it_returns_valid_value_for_entryFormat()
     {
-        $this->repository->shouldReceive('get')->once()->with('sql_logger.formatting.query_format')
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.formatting.entry_format')
             ->andReturn('[sample]/[example]/foo');
         $this->assertSame('[sample]/[example]/foo', $this->config->entryFormat());
     }

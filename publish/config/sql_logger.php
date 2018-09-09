@@ -46,7 +46,7 @@ return [
          *              user then instead of value - sign will be used
          * - \n - new line separator.
          */
-        'entry_format' => env('SQL_LOGGER_FORMAT_ENTRY_FORMAT', "/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */ \n[query]\n[separator]"),
+        'entry_format' => env('SQL_LOGGER_FORMAT_ENTRY_FORMAT', "/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */\n[query]\n[separator]\n"),
     ],
 
     'all_queries' => [

@@ -73,7 +73,7 @@ Using this package is free of charge, however to keep it up-to-date and add new 
     SQL_LOGGER_SLOW_QUERIES_PATTERN="#.*#i"
     SQL_LOGGER_SLOW_QUERIES_FILE_NAME="[Y-m-d]-slow-log"
     SQL_LOGGER_FORMAT_NEW_LINES_TO_SPACES=false
-    SQL_LOGGER_FORMAT_ENTRY_FORMAT="/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */ \n[query]\n[separator]"
+    SQL_LOGGER_FORMAT_ENTRY_FORMAT="/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */\n[query]\n[separator]\n"
     ```
     
     and adjust values to your needs. You can skip variables for which you want to use default values. 

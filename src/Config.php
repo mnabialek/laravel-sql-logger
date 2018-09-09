@@ -158,6 +158,6 @@ class Config
      */
     public function entryFormat()
     {
-        return $this->repository->get('sql_logger.formatting.query_format');
+        return $this->repository->get('sql_logger.formatting.entry_format');
     }
 }
