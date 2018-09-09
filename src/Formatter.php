@@ -52,11 +52,7 @@ class Formatter
             '\n' => PHP_EOL,
         ];
 
-        $entry = str_replace(array_keys($replace), array_values($replace), $this->config->entryFormat());
-
-        return preg_replace_callback('(\[user_(\w*)\])', function ($matches) {
-            return ($user = $this->app['auth']->user()) ? $user->{$matches[1]} : '-';
-        }, $entry);
+        return str_replace(array_keys($replace), array_values($replace), $this->config->entryFormat());
     }
 
     /**

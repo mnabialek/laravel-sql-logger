@@ -10,7 +10,6 @@ use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Formatter;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mockery;
-use stdClass;
 
 class FormatterTest extends UnitTestCase
 {
@@ -88,99 +87,6 @@ EOT;
         $expected = <<<EOT
 /*==================================================*/
 {$number} : {$now} {$time}ms
-Origin (request): DELETE http://example.com/test
-{$sql};
-/*==================================================*/
-
-EOT;
-
-        $this->assertSame($expected, $result);
-    }
-
-    /** @test */
-    public function it_adds_user_info_when_user_is_logged_and_user_info_requested()
-    {
-        $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
-        $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
-        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
-        $config->shouldReceive('entryFormat')->once()->withNoArgs()
-            ->andReturn("[separator]\n[query_nr] : [datetime] [query_time]\nUser id: [user_id], e-mail: [user_email], name: [user_name]\n[origin]\n[query]\n[separator]\n");
-        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
-        $request = Mockery::mock(Request::class);
-        $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
-        $request->shouldReceive('method')->once()->withNoArgs()->andReturn('DELETE');
-        $request->shouldReceive('fullUrl')->once()->withNoArgs()
-            ->andReturn('http://example.com/test');
-        $authManager = Mockery::mock(stdClass::class);
-        $app->shouldReceive('offsetGet')->with('auth')->andReturn($authManager);
-        $user = (object) ['id' => 15, 'email' => 'sample-user-email@example.com', 'name' => 'Test user'];
-        $authManager->shouldReceive('user')->andReturn($user);
-
-        $now = '2015-03-04 08:12:07';
-        Carbon::setTestNow($now);
-
-        $query = Mockery::mock(SqlQuery::class);
-        $number = 434;
-        $time = 617.24;
-        $sql = 'SELECT * FROM somewhere';
-        $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
-        $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
-        $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
-
-        $formatter = new Formatter($app, $config);
-        $result = $formatter->getLine($query);
-
-        $expected = <<<EOT
-/*==================================================*/
-{$number} : {$now} {$time}ms
-User id: 15, e-mail: sample-user-email@example.com, name: Test user
-Origin (request): DELETE http://example.com/test
-{$sql};
-/*==================================================*/
-
-EOT;
-
-        $this->assertSame($expected, $result);
-    }
-
-    /** @test */
-    public function it_adds_user_info_when_user_is_not_logged_and_user_info_requested()
-    {
-        $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
-        $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
-        $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
-        $config->shouldReceive('entryFormat')->once()->withNoArgs()
-            ->andReturn("[separator]\n[query_nr] : [datetime] [query_time]\nUser id: [user_id], e-mail: [user_email], name: [user_name]\n[origin]\n[query]\n[separator]\n");
-        $app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
-        $request = Mockery::mock(Request::class);
-        $app->shouldReceive('offsetGet')->times(2)->with('request')->andReturn($request);
-        $request->shouldReceive('method')->once()->withNoArgs()->andReturn('DELETE');
-        $request->shouldReceive('fullUrl')->once()->withNoArgs()
-            ->andReturn('http://example.com/test');
-        $authManager = Mockery::mock(stdClass::class);
-        $app->shouldReceive('offsetGet')->with('auth')->andReturn($authManager);
-        $authManager->shouldReceive('user')->andReturn(null);
-
-        $now = '2015-03-04 08:12:07';
-        Carbon::setTestNow($now);
-
-        $query = Mockery::mock(SqlQuery::class);
-        $number = 434;
-        $time = 617.24;
-        $sql = 'SELECT * FROM somewhere';
-        $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
-        $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
-        $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
-
-        $formatter = new Formatter($app, $config);
-        $result = $formatter->getLine($query);
-
-        $expected = <<<EOT
-/*==================================================*/
-{$number} : {$now} {$time}ms
-User id: -, e-mail: -, name: -
 Origin (request): DELETE http://example.com/test
 {$sql};
 /*==================================================*/

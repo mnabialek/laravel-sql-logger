@@ -40,10 +40,6 @@ return [
          * - [query_time] - how long query was executed
          * - [query] - query itself
          * - [separator] - extra separator line to make it easier to see where next query starts
-         * - [user_*] - column for user. If you want to get id of user use [user_id], if you want to
-         *              get user email user [user_email] and so on. Text after underscore should
-         *              match column name from database ($user->email). If there is no authenticated
-         *              user then instead of value - sign will be used
          * - \n - new line separator.
          */
         'entry_format' => env('SQL_LOGGER_FORMAT_ENTRY_FORMAT', "/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */\n[query]\n[separator]\n"),
