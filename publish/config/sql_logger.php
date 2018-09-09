@@ -30,6 +30,19 @@ return [
          * Whether new lines should be replaced by spaces (to keep query in single line)
          */
         'new_lines_to_spaces' => env('SQL_LOGGER_FORMAT_NEW_LINES_TO_SPACES', false),
+
+        /*
+         * Single entry format. Available options:
+         *
+         * - [origin] - where this query coming from - request or artisan
+         * - [query_nr] - query number
+         * - [datetime] - date and time when query was executed
+         * - [query_time] - how long query was executed
+         * - [query] - query itself
+         * - [separator] - extra separator line to make it easier to see where next query starts
+         * - \n - new line separator.
+         */
+        'entry_format' => env('SQL_LOGGER_FORMAT_ENTRY_FORMAT', "/* [origin]\n   Query [query_nr] - [datetime] [[query_time]] */ \n[query]\n[separator]"),
     ],
 
     'all_queries' => [

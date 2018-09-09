@@ -158,4 +158,12 @@ class ConfigTest extends UnitTestCase
             ->andReturn(false);
         $this->assertFalse($this->config->newLinesToSpaces());
     }
+
+    /** @test */
+    public function it_returns_valid_value_for_entryFormat()
+    {
+        $this->repository->shouldReceive('get')->once()->with('sql_logger.formatting.query_format')
+            ->andReturn('[sample]/[example]/foo');
+        $this->assertSame('[sample]/[example]/foo', $this->config->entryFormat());
+    }
 }

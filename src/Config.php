@@ -150,4 +150,14 @@ class Config
     {
         return $this->repository->get('sql_logger.formatting.new_lines_to_spaces');
     }
+
+    /**
+     * Get query format that should be used to save query.
+     *
+     * @return string
+     */
+    public function entryFormat()
+    {
+        return $this->repository->get('sql_logger.formatting.query_format');
+    }
 }

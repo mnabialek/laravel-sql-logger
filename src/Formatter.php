@@ -42,10 +42,17 @@ class Formatter
      */
     public function getLine(SqlQuery $query)
     {
-        return '/* ' . $this->originLine() . PHP_EOL .
-            '   ' . $this->querySummaryLine($query) . ' */' . PHP_EOL .
-            $this->queryLine($query) . PHP_EOL .
-            $this->separatorLine() . PHP_EOL;
+        $replace = [
+            '[origin]' => $this->originLine(),
+            '[query_nr]' => $query->number(),
+            '[datetime]' => Carbon::now()->toDateTimeString(),
+            '[query_time]' => $this->time($query->time()),
+            '[query]' => $this->queryLine($query),
+            '[separator]' => $this->separatorLine(),
+            '\n' => PHP_EOL,
+        ];
+
+        return str_replace(array_keys($replace), array_values($replace), $this->config->entryFormat());
     }
 
     /**
@@ -70,19 +77,6 @@ class Formatter
         return 'Origin ' . ($this->app->runningInConsole()
                 ? '(console): ' . $this->getArtisanLine()
                 : '(request): ' . $this->getRequestLine());
-    }
-
-    /**
-     * Get query summary line.
-     *
-     * @param SqlQuery $query
-     *
-     * @return string
-     */
-    protected function querySummaryLine(SqlQuery $query)
-    {
-        return 'Query ' . $query->number() . ' - ' . Carbon::now()->toDateTimeString() . ' [' .
-            $this->time($query->time()) . ']';
     }
 
     /**
