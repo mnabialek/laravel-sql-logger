@@ -1,7 +1,7 @@
 {
     "name": "mnabialek/laravel-sql-logger",
     "description": "Log SQL queries in Laravel/Lumen framework",
-    "keywords": ["laravel", "sql", "log", "logger", "lumen", "sql logger", "log sql queries"],
+    "keywords": ["laravel", "sql", "log", "logger", "lumen", "sql logger", "log sql queries", "log sql", "sql log"],
     "license": "MIT",
     "authors": [
         {
@@ -12,7 +12,7 @@
     "require": {
         "illuminate/support": "5.*",
         "mnabialek/laravel-version": "^1.0.1",
-        "nesbot/carbon": "~1.0",
+        "nesbot/carbon": "~1.0 || ^2.0",
         "illuminate/filesystem": "5.*",
         "illuminate/container": "5.*"
     },
@@ -45,6 +45,6 @@
         },
         "suggest": {
             "symfony/thanks": "Star packages you use running 'composer thanks' command"
-        }        
-    } 
+        }
+    }
 }
