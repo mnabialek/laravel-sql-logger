@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.1] - 2019-04-27
+### Changed
+- Add support for Carbon 2
+
 ## [2.2.0] - 2018-09-09
 ### Added
 - Possibility to use custom entry format
