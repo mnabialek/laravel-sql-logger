@@ -18,6 +18,8 @@ class ServiceProviderTest extends UnitTestCase
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
 
+        $app->shouldReceive('make')->once()->with('events');
+
         $app->shouldReceive('make')->once()->with(Config::class)->andReturn($config);
 
         $provider = Mockery::mock(ServiceProvider::class)->makePartial()
@@ -54,6 +56,8 @@ class ServiceProviderTest extends UnitTestCase
         $app = Mockery::mock(Container::class, \ArrayAccess::class);
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
+
+        $app->shouldReceive('make')->once()->with('events');
 
         $app->shouldReceive('make')->once()->with(Config::class)->andReturn($config);
 
@@ -97,6 +101,8 @@ class ServiceProviderTest extends UnitTestCase
         $app = Mockery::mock(Container::class, \ArrayAccess::class);
         Container::setInstance($app);
         $config = Mockery::mock(Config::class);
+
+        $app->shouldReceive('make')->once()->with('events');
 
         $app->shouldReceive('make')->once()->with(Config::class)->andReturn($config);
 

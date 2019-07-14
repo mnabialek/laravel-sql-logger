@@ -26,6 +26,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
+        // make sure events will be fired in Lumen
+        $this->app->make('events');
+
         // merge config
         $this->mergeConfigFrom($this->configFileLocation(), 'sql_logger');
 
