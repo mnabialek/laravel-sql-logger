@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.2] - 2019-07-14
+### Fixed
+- Fix support for Lumen
+
 ## [2.2.1] - 2019-04-27
 ### Changed
 - Add support for Carbon 2
