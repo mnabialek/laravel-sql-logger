@@ -39,6 +39,10 @@ trait ReplacesBindings
             return 'null';
         }
 
+        if (is_bool($value)) {
+            return (int) $value;
+        }
+
         return is_numeric($value) ? $value : "'" . $value . "'";
     }
 

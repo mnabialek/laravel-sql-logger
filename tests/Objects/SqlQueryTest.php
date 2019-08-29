@@ -156,4 +156,21 @@ EOF;
 
         $this->assertSame($expectedSql, $query->get());
     }
+
+    /** @test */
+    public function it_converts_booleans_to_int()
+    {
+        $sql = <<<EOF
+SELECT * FROM users WHERE archived = :archived AND active = :active;
+EOF;
+
+        $bindings = [':archived' => true, ':active' => false];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM users WHERE archived = 1 AND active = 0;
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
 }
