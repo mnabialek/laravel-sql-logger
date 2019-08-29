@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.3] - 2019-08-29
+### Changed
+- Boolean values are now displayed as **1** and **0**
+
 ## [2.2.2] - 2019-07-14
 ### Fixed
 - Fix support for Lumen
