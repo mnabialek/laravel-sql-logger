@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.4] - 2019-09-04
+### Changed
+- Add support for Laravel 6
+
 ## [2.2.3] - 2019-08-29
 ### Changed
 - Boolean values are now displayed as **1** and **0**

@@ -28,8 +28,8 @@ class ServiceProviderTest extends UnitTestCase
 
         $baseDir = '/some/sample/directory';
 
-        $app->shouldReceive('make')->atLeast()->once()
-            ->with('path.config')->andReturn($baseDir);
+        $app->shouldReceive('configPath')->atLeast()->once()
+            ->with('sql_logger.php')->andReturn($baseDir . '/sql_logger.php');
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
@@ -67,8 +67,8 @@ class ServiceProviderTest extends UnitTestCase
 
         $baseDir = '/some/sample/directory';
 
-        $app->shouldReceive('make')->atLeast()->once()
-            ->with('path.config')->andReturn($baseDir);
+        $app->shouldReceive('configPath')->atLeast()->once()
+            ->with('sql_logger.php')->andReturn($baseDir . '/sql_logger.php');
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
@@ -112,8 +112,8 @@ class ServiceProviderTest extends UnitTestCase
 
         $baseDir = '/some/sample/directory';
 
-        $app->shouldReceive('make')->atLeast()->once()
-            ->with('path.config')->andReturn($baseDir);
+        $app->shouldReceive('configPath')->atLeast()->once()
+            ->with('sql_logger.php')->andReturn($baseDir . '/sql_logger.php');
 
         $configFile = realpath(__DIR__ . '/../publish/config/sql_logger.php');
         $provider->shouldReceive('mergeConfigFrom')->once()->with(
