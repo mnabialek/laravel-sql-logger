@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.5] - 2020-03-22
+### Changed
+- Add support for Laravel 7
+
 ## [2.2.4] - 2019-09-04
 ### Changed
 - Add support for Laravel 6
