@@ -43,6 +43,10 @@ trait ReplacesBindings
             return (int) $value;
         }
 
+        if ($value instanceof \DateTimeImmutable) {
+            return $value->format('Y-m-d H:i:s');
+        }
+
         return is_numeric($value) ? $value : "'" . $value . "'";
     }
 
