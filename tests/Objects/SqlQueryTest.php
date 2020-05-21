@@ -60,6 +60,25 @@ EOF;
     }
 
     /** @test */
+    public function it_returns_valid_query_with_replaced_bindings_for_immutable_date()
+    {
+        $sql = <<<EOF
+SELECT * FROM tests WHERE a = ? AND CONCAT(?, '%'
+ , ?) = ? AND column = ?
+EOF;
+
+        $bindings = ["'test", Carbon::yesterday(), new \DateTimeImmutable('tomorrow'), 453, 67.23];
+        $query = new SqlQuery(56, $sql, $bindings, 130);
+
+        $expectedSql = <<<EOF
+SELECT * FROM tests WHERE a = '\'test' AND CONCAT('{$bindings[1]->toDateTimeString()}', '%'
+ , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = 67.23
+EOF;
+
+        $this->assertSame($expectedSql, $query->get());
+    }
+
+    /** @test */
     public function it_returns_valid_query_when_question_mark_in_quotes()
     {
         $sql = <<<EOF
