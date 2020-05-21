@@ -2,7 +2,7 @@
 
 namespace Mnabialek\LaravelSqlLogger\Objects\Concerns;
 
-use DateTime;
+use DateTimeInterface;
 
 trait ReplacesBindings
 {
@@ -72,7 +72,7 @@ trait ReplacesBindings
     protected function formatBindings($bindings)
     {
         foreach ($bindings as $key => $binding) {
-            if ($binding instanceof DateTime) {
+            if ($binding instanceof DateTimeInterface) {
                 $bindings[$key] = $binding->format('Y-m-d H:i:s');
             } elseif (is_string($binding)) {
                 $bindings[$key] = str_replace("'", "\\'", $binding);

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.6] - 2020-05-21
+### Changed
+- Add support for DateTimeImmutable objects
+
 ## [2.2.5] - 2020-03-22
 ### Changed
 - Add support for Laravel 7
