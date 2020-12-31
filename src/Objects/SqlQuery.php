@@ -33,20 +33,20 @@ class SqlQuery
      *
      * @param int $number
      * @param string $sql
-     * @param array $bindings
+     * @param array|null $bindings
      * @param float $time
      */
-    public function __construct($number, $sql, array $bindings, $time)
+    public function __construct($number, $sql, array $bindings = null, $time)
     {
         $this->number = $number;
         $this->sql = $sql;
-        $this->bindings = $bindings;
+        $this->bindings = $bindings ?: [];
         $this->time = $time;
     }
 
     /**
      * Get number of query.
-     * 
+     *
      * @return int
      */
     public function number()
@@ -56,7 +56,7 @@ class SqlQuery
 
     /**
      * Get raw SQL (without bindings).
-     * 
+     *
      * @return string
      */
     public function raw()
@@ -66,7 +66,7 @@ class SqlQuery
 
     /**
      * Get bindings.
-     * 
+     *
      * @return array
      */
     public function bindings()
@@ -76,7 +76,7 @@ class SqlQuery
 
     /**
      * Get time.
-     * 
+     *
      * @return float
      */
     public function time()

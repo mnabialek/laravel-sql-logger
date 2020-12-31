@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.8] - 2020-12-31
+### Fixed
+- Fix case when bindings are null
+
 ## [2.2.7] - 2020-09-17
 ### Changed
 - Add support for Laravel 8

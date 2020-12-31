@@ -54,4 +54,27 @@ class QueryTest extends UnitTestCase
         $this->assertSame($dataObject->bindings, $result->bindings());
         $this->assertSame($dataObject->time, $result->time());
     }
+
+    /** @test */
+    public function it_returns_valid_sql_query_object_when_bindings_are_null()
+    {
+        $version = Mockery::mock(Version::class);
+        $version->shouldReceive('min')->once()->with('5.2.0')->andReturn(true);
+
+        $queryObject = new Query($version);
+
+        $number = 100;
+        $dataObject = new stdClass();
+        $dataObject->sql = 'SELECT * FROM everywhere WHERE user = ?';
+        $dataObject->bindings = null;
+        $dataObject->time = 516.32;
+
+        $result = $queryObject->get($number, $dataObject);
+
+        $this->assertInstanceOf(SqlQuery::class, $result);
+        $this->assertSame($number, $result->number());
+        $this->assertSame($dataObject->sql, $result->raw());
+        $this->assertSame([], $result->bindings());
+        $this->assertSame($dataObject->time, $result->time());
+    }
 }
