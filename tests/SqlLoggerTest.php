@@ -33,7 +33,7 @@ class SqlLoggerTest extends UnitTestCase
      */
     private $logger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = Mockery::mock(Container::class, ArrayAccess::class);
         $this->query = Mockery::mock(Query::class);
