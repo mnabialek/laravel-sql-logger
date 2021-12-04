@@ -47,6 +47,7 @@ class QueryTest extends UnitTestCase
         $dataObject->sql = 'SELECT * FROM everywhere WHERE user = ?';
         $dataObject->bindings = ['one', 2, 'three'];
         $dataObject->time = 516.32;
+        $dataObject->connectionName = 'db';
 
         $result = $queryObject->get($number, $dataObject);
 
@@ -70,6 +71,7 @@ class QueryTest extends UnitTestCase
         $dataObject->sql = 'SELECT * FROM everywhere WHERE user = ?';
         $dataObject->bindings = null;
         $dataObject->time = 516.32;
+        $dataObject->connectionName = 'db';
 
         $result = $queryObject->get($number, $dataObject);
 
