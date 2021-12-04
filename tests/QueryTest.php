@@ -22,14 +22,16 @@ class QueryTest extends UnitTestCase
         $query = 'SELECT * FROM everywhere WHERE user = ?';
         $bindings = ['one', 2, 'three'];
         $time = 516.32;
+        $connection = 'db';
 
-        $result = $queryObject->get($number, $query, $bindings, $time);
+        $result = $queryObject->get($number, $query, $bindings, $time, $connection);
 
         $this->assertInstanceOf(SqlQuery::class, $result);
         $this->assertSame($number, $result->number());
         $this->assertSame($query, $result->raw());
         $this->assertSame($bindings, $result->bindings());
         $this->assertSame($time, $result->time());
+        $this->assertSame($connection, $result->connection());
     }
 
     /** @test */
@@ -45,6 +47,7 @@ class QueryTest extends UnitTestCase
         $dataObject->sql = 'SELECT * FROM everywhere WHERE user = ?';
         $dataObject->bindings = ['one', 2, 'three'];
         $dataObject->time = 516.32;
+        $dataObject->connectionName = 'db';
 
         $result = $queryObject->get($number, $dataObject);
 
@@ -68,6 +71,7 @@ class QueryTest extends UnitTestCase
         $dataObject->sql = 'SELECT * FROM everywhere WHERE user = ?';
         $dataObject->bindings = null;
         $dataObject->time = 516.32;
+        $dataObject->connectionName = 'db';
 
         $result = $queryObject->get($number, $dataObject);
 
