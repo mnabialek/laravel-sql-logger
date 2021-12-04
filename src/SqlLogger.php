@@ -4,6 +4,7 @@ namespace Mnabialek\LaravelSqlLogger;
 
 use Exception;
 use Illuminate\Container\Container;
+use Illuminate\Database\Events\QueryExecuted;
 
 class SqlLogger
 {
@@ -53,9 +54,12 @@ class SqlLogger
     public function log($query, array $bindings = null, $time = null)
     {
         ++$this->queryNumber;
-
         try {
-            $sqlQuery = $this->query->get($this->queryNumber, $query, $bindings, $time);
+            if ($query instanceof QueryExecuted) {
+                $sqlQuery = $this->query->get($this->queryNumber, $query, $bindings, $time, $query->connectionName);
+            } else {
+                $sqlQuery = $this->query->get($this->queryNumber, $query, $bindings, $time, null);
+            }
             $this->writer->save($sqlQuery);
         } catch (Exception $e) {
             $this->app['log']->notice("Cannot log query nr {$this->queryNumber}. Exception:" . PHP_EOL . $e);
