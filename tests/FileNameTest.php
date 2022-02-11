@@ -25,7 +25,7 @@ class FileNameTest extends UnitTestCase
      */
     protected $filename;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         Carbon::setTestNow('2015-03-07 08:16:09');
         $this->app = Mockery::mock(Container::class);

@@ -13,7 +13,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected $config;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function __construct($app)
     {
@@ -22,7 +22,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function register()
     {

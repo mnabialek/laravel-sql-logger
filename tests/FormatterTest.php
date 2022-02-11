@@ -2,7 +2,6 @@
 
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
-use ArrayAccess;
 use Carbon\Carbon;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
@@ -17,7 +16,7 @@ class FormatterTest extends UnitTestCase
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -58,7 +57,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_custom_entry_format_was_used()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -100,7 +99,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_seconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -141,7 +140,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -180,7 +179,7 @@ EOT;
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console_for_array()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -223,7 +222,7 @@ EOT;
     public function it_replaces_new_lines_in_query_by_spaces_when_config_set_to_true()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(true);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -274,7 +273,7 @@ EOT;
     public function it_does_not_replace_new_lines_in_query_when_config_set_to_false()
     {
         $config = Mockery::mock(Config::class);
-        $app = Mockery::mock(Container::class, ArrayAccess::class);
+        $app = Mockery::mock(Container::class);
         $config->shouldReceive('useSeconds')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('newLinesToSpaces')->once()->withNoArgs()->andReturn(false);
         $config->shouldReceive('entryFormat')->once()->withNoArgs()
@@ -293,13 +292,13 @@ EOT;
         $number = 434;
         $time = 617.24;
         $sql = <<<SQL
-SELECT * FROM 
+SELECT * FROM
 somewhere WHERE name = '
 '
 SQL;
 
         $expectedSql = <<<SQL
-SELECT * FROM 
+SELECT * FROM
 somewhere WHERE name = '
 '
 SQL;

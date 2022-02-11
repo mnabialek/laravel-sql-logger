@@ -18,7 +18,7 @@ class ConfigTest extends UnitTestCase
      */
     protected $config;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = Mockery::mock(Repository::class);
         $this->config = new Config($this->repository);

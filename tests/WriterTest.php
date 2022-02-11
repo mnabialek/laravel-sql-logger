@@ -48,7 +48,7 @@ class WriterTest extends UnitTestCase
      */
     private $now;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->now = Carbon::parse('2015-02-03 06:41:31');
         Carbon::setTestNow($this->now);
@@ -60,7 +60,7 @@ class WriterTest extends UnitTestCase
         $this->filesystem = new Filesystem();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->filesystem->deleteDirectory($this->directory);
         parent::tearDown();
@@ -74,7 +74,7 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logDirectory')->once()->withNoArgs()->andReturn($this->directory);
-        $this->assertFileNotExists($this->directory);
+        $this->assertFileDoesNotExist($this->directory);
         $this->writer->save($query);
         $this->assertFileExists($this->directory);
         $this->assertEmpty($this->filesystem->allFiles($this->directory));
@@ -88,9 +88,9 @@ class WriterTest extends UnitTestCase
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldNotReceive('logDirectory');
-        $this->assertFileNotExists($this->directory);
+        $this->assertFileDoesNotExist($this->directory);
         $this->writer->save($query);
-        $this->assertFileNotExists($this->directory);
+        $this->assertFileDoesNotExist($this->directory);
     }
 
     /** @test */
