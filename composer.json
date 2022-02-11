@@ -10,18 +10,18 @@
         }
     ],
     "require": {
-        "illuminate/support": "5.*|6.*|7.*|8.*",
+        "illuminate/support": "5.*|6.*|7.*|8.*|9.*",
         "mnabialek/laravel-version": "^1.0.3",
         "nesbot/carbon": "~1.0 || ^2.0",
-        "illuminate/filesystem": "5.*|6.*|7.*|8.*",
-        "illuminate/container": "5.*|6.*|7.*|8.*"
+        "illuminate/filesystem": "5.*|6.*|7.*|8.*|9.*",
+        "illuminate/container": "5.*|6.*|7.*|8.*|9.*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2.5",
-        "phpunit/phpunit": "^6.5",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": "^9.0",
         "mockery/mockery": "^1.0",
         "php-coveralls/php-coveralls": "^2.0",
-        "laravel/framework": "6.*|7.*|8.*"
+        "laravel/framework": "9.*"
     },
     "autoload": {
         "psr-4": {
