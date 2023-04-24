@@ -69,7 +69,7 @@ class WriterTest extends UnitTestCase
     /** @test */
     public function it_creates_directory_if_it_does_not_exist_for_1st_query()
     {
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
@@ -83,7 +83,7 @@ class WriterTest extends UnitTestCase
     /** @test */
     public function it_does_not_create_directory_if_it_does_not_exist_for_2nd_query()
     {
-        $query = new SqlQuery(2, 'test', [], 5.41);
+        $query = new SqlQuery(2, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(false);
@@ -99,7 +99,7 @@ class WriterTest extends UnitTestCase
         $lineContent = 'Sample log line';
         $expectedFileName = $this->now->toDateString() . '-log.sql';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
@@ -124,7 +124,7 @@ class WriterTest extends UnitTestCase
 
         $lineContent = 'Sample log line';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
@@ -149,7 +149,7 @@ class WriterTest extends UnitTestCase
 
         $lineContent = 'Sample log line';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
@@ -174,7 +174,7 @@ class WriterTest extends UnitTestCase
 
         $lineContent = 'Sample log line';
 
-        $query = new SqlQuery(2, 'test', [], 5.41);
+        $query = new SqlQuery(2, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
@@ -195,7 +195,7 @@ class WriterTest extends UnitTestCase
         $lineContent = 'Sample slow log line';
         $expectedFileName = $this->now->toDateString() . '-slow-log.sql';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
@@ -215,7 +215,7 @@ class WriterTest extends UnitTestCase
     {
         $lineContent = 'Sample slow log line';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(false);
         $this->config->shouldReceive('logSlowQueries')->once()->withNoArgs()->andReturn(true);
@@ -233,7 +233,7 @@ class WriterTest extends UnitTestCase
         $expectedFileName = $this->now->toDateString() . '-log.sql';
         $expectedSlowFileName = $this->now->toDateString() . '-slow-log.sql';
 
-        $query = new SqlQuery(1, 'test', [], 5.41);
+        $query = new SqlQuery(1, 'test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#.*#i');
@@ -261,7 +261,7 @@ class WriterTest extends UnitTestCase
         $expectedFileName = $this->now->toDateString() . '-log.sql';
         $expectedSlowFileName = $this->now->toDateString() . '-slow-log.sql';
 
-        $query = new SqlQuery(1, 'select * FROM test', [], 5.41);
+        $query = new SqlQuery(1, 'select * FROM test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^SELECT .*$#i');
@@ -287,7 +287,7 @@ class WriterTest extends UnitTestCase
     {
         $lineContent = 'Sample log line';
 
-        $query = new SqlQuery(1, 'select * FROM test', [], 5.41);
+        $query = new SqlQuery(1, 'select * FROM test', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
@@ -307,7 +307,7 @@ class WriterTest extends UnitTestCase
         $expectedFileName = $this->now->toDateString() . '-log.sql';
         $expectedSlowFileName = $this->now->toDateString() . '-slow-log.sql';
 
-        $query = new SqlQuery(1, 'INSERT INTO test(one, two, three) values(?, ?, ?)', [], 5.41);
+        $query = new SqlQuery(1, 'INSERT INTO test(one, two, three) values(?, ?, ?)', [], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE |INSERT ).*$#i');
@@ -335,7 +335,7 @@ class WriterTest extends UnitTestCase
         $expectedFileName = $this->now->toDateString() . '-log.sql';
         $expectedSlowFileName = $this->now->toDateString() . '-slow-log.sql';
 
-        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41);
+        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE test SET x = \? |INSERT ).*$#i');
@@ -362,7 +362,7 @@ class WriterTest extends UnitTestCase
         $lineContent = 'Sample log line';
         $expectedFileName = $this->now->toDateString() . '-log.sql';
 
-        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41);
+        $query = new SqlQuery(1, 'UPDATE test SET x = ? WHERE id = ?', [2, 3], 5.41, 'db');
         $this->formatter->shouldReceive('getLine')->once()->with($query)->andReturn($lineContent);
         $this->config->shouldReceive('logAllQueries')->once()->withNoArgs()->andReturn(true);
         $this->config->shouldReceive('allQueriesPattern')->once()->withNoArgs()->andReturn('#^(?:UPDATE test SET x = \? |INSERT ).*$#i');

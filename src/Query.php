@@ -30,15 +30,16 @@ class Query
      *
      * @return SqlQuery
      */
-    public function get($number, $query, array $bindings = null, $time = null)
+    public function get($number, $query, array $bindings = null, $time = null, $connection=null)
     {
         // for Laravel/Lumen 5.2+ $query is object and it holds all the data
         if ($this->version->min('5.2.0')) {
             $bindings = $query->bindings;
             $time = $query->time;
+            $connection = $query->connectionName;
             $query = $query->sql;
         }
 
-        return new SqlQuery($number, $query, $bindings, $time);
+        return new SqlQuery($number, $query, $bindings, $time, $connection);
     }
 }

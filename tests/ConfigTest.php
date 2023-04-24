@@ -1,5 +1,4 @@
 <?php
-
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use Illuminate\Contracts\Config\Repository;
