@@ -53,7 +53,7 @@ EOF;
 
         $expectedSql = <<<EOF
 SELECT * FROM tests WHERE a = '\'test' AND CONCAT('{$bindings[1]->toDateTimeString()}', '%'
- , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = 67.23
+ , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = '67.23'
 EOF;
 
         $this->assertSame($expectedSql, $query->get());
@@ -72,7 +72,7 @@ EOF;
 
         $expectedSql = <<<EOF
 SELECT * FROM tests WHERE a = '\'test' AND CONCAT('{$bindings[1]->toDateTimeString()}', '%'
- , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = 67.23
+ , '{$bindings[2]->format('Y-m-d H:i:s')}') = 453 AND column = '67.23'
 EOF;
 
         $this->assertSame($expectedSql, $query->get());
