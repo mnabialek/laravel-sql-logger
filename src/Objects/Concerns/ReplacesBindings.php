@@ -92,7 +92,7 @@ trait ReplacesBindings
         return $this->wrapRegex(
             $this->notInsideQuotes('?')
             . '|' .
-            $this->notInsideQuotes('\:\w+', false)
+            $this->notInsideQuotes('[^:]\:\w+', false)
         );
     }
 
