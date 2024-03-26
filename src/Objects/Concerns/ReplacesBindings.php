@@ -19,7 +19,7 @@ trait ReplacesBindings
         $generalRegex = $this->getRegex();
 
         foreach ($this->formatBindings($bindings) as $key => $binding) {
-            $regex = is_numeric($key) ? $generalRegex : $this->getNamedParameterRegex($key);
+            $regex = is_int($key) ? $generalRegex : $this->getNamedParameterRegex($key);
             $sql = preg_replace($regex, $this->value($binding), $sql, 1);
         }
 
@@ -43,7 +43,7 @@ trait ReplacesBindings
             return (int) $value;
         }
 
-        return is_numeric($value) ? $value : "'" . $value . "'";
+        return is_int($value) ? $value : "'" . $value . "'";
     }
 
     /**
