@@ -16,6 +16,7 @@ trait ReplacesBindings
      */
     protected function replaceBindings($sql, array $bindings)
     {
+        $sql = str_replace('??&', '__qm_amp__', $sql);
         $generalRegex = $this->getRegex();
 
         foreach ($this->formatBindings($bindings) as $key => $binding) {
@@ -23,7 +24,7 @@ trait ReplacesBindings
             $sql = preg_replace($regex, $this->value($binding), $sql, 1);
         }
 
-        return $sql;
+        return str_replace('__qm_amp__', '?&', $sql);
     }
 
     /**
@@ -90,9 +91,9 @@ trait ReplacesBindings
     protected function getRegex()
     {
         return $this->wrapRegex(
-            $this->notInsideQuotes('?')
+            $this->notInsideQuotes('?[^$]')
             . '|' .
-            $this->notInsideQuotes('\:\w+', false)
+            $this->notInsideQuotes('[^:]\:\w+', false)
         );
     }
 
