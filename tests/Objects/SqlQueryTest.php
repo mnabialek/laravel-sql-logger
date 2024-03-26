@@ -5,10 +5,11 @@ namespace Mnabialek\LaravelSqlLogger\Tests\Objects;
 use Illuminate\Support\Carbon;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mnabialek\LaravelSqlLogger\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class SqlQueryTest extends UnitTestCase
 {
-    /** @test */
+    #[Test]
     public function it_returns_valid_number()
     {
         $value = 56;
@@ -16,7 +17,7 @@ class SqlQueryTest extends UnitTestCase
         $this->assertSame($value, $query->number());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_raw_query()
     {
         $value = 'SELECT * FROM tests WHERE a = ?';
@@ -24,7 +25,7 @@ class SqlQueryTest extends UnitTestCase
         $this->assertSame($value, $query->raw());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_bindings_array()
     {
         $value = ['one', new \DateTime(), 3];
@@ -32,7 +33,7 @@ class SqlQueryTest extends UnitTestCase
         $this->assertSame($value, $query->bindings());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_time()
     {
         $value = 130;
@@ -40,7 +41,7 @@ class SqlQueryTest extends UnitTestCase
         $this->assertSame($value, $query->time());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_with_replaced_bindings()
     {
         $sql = <<<EOF
@@ -59,7 +60,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_with_replaced_bindings_for_immutable_date()
     {
         $sql = <<<EOF
@@ -78,7 +79,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_when_question_mark_in_quotes()
     {
         $sql = <<<EOF
@@ -94,7 +95,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_for_named_bindings()
     {
         $sql = <<<EOF
@@ -110,7 +111,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_for_multiple_named_bindings_in_other_order()
     {
         $sql = <<<EOF
@@ -126,7 +127,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_query_when_empty_string_as_column_and_date_binding()
     {
         $sql = <<<EOF
@@ -142,7 +143,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_both_colon_and_non_colon_parameters()
     {
         $sql = <<<EOF
@@ -159,7 +160,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_leaves_null_values_not_changed()
     {
         $sql = <<<EOF
@@ -176,7 +177,7 @@ EOF;
         $this->assertSame($expectedSql, $query->get());
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_booleans_to_int()
     {
         $sql = <<<EOF

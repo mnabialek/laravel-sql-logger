@@ -6,11 +6,12 @@ use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mnabialek\LaravelSqlLogger\Query;
 use Mnabialek\LaravelVersion\Version;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 class QueryTest extends UnitTestCase
 {
-    /** @test */
+    #[Test]
     public function it_returns_valid_sql_query_object_when_version_is_below_5_2_0()
     {
         $version = Mockery::mock(Version::class);
@@ -32,7 +33,7 @@ class QueryTest extends UnitTestCase
         $this->assertSame($time, $result->time());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_sql_query_object_when_version_is_5_2_0()
     {
         $version = Mockery::mock(Version::class);
@@ -55,7 +56,7 @@ class QueryTest extends UnitTestCase
         $this->assertSame($dataObject->time, $result->time());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_sql_query_object_when_bindings_are_null()
     {
         $version = Mockery::mock(Version::class);

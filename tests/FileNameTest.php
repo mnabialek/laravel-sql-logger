@@ -7,6 +7,7 @@ use Illuminate\Container\Container;
 use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\FileName;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 
 class FileNameTest extends UnitTestCase
 {
@@ -33,7 +34,7 @@ class FileNameTest extends UnitTestCase
         $this->filename = new FileName($this->app, $this->config);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_file_name_for_all_queries_when_not_running_in_console()
     {
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
@@ -45,7 +46,7 @@ class FileNameTest extends UnitTestCase
         $this->assertSame('sample2015-test-03-abc-07.extension', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_file_name_for_all_queries_when_running_in_console()
     {
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);
@@ -59,7 +60,7 @@ class FileNameTest extends UnitTestCase
         $this->assertSame('sample2015-test-03-abc-07-artisan-suffix.extension', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_file_name_for_slow_queries_when_not_running_in_console()
     {
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(false);
@@ -71,7 +72,7 @@ class FileNameTest extends UnitTestCase
         $this->assertSame('2015-test-03-abc-07-sample.log', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_valid_file_name_for_slow_queries_when_running_in_console()
     {
         $this->app->shouldReceive('runningInConsole')->once()->withNoArgs()->andReturn(true);

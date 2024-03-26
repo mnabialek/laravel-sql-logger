@@ -9,10 +9,11 @@ use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Formatter;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 
 class FormatterTest extends UnitTestCase
 {
-    /** @test */
+    #[Test]
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
@@ -53,7 +54,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_line_in_valid_way_when_custom_entry_format_was_used()
     {
         $config = Mockery::mock(Config::class);
@@ -95,7 +96,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_line_in_valid_way_when_seconds_are_used_and_running_via_http()
     {
         $config = Mockery::mock(Config::class);
@@ -136,7 +137,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console()
     {
         $config = Mockery::mock(Config::class);
@@ -175,7 +176,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_line_in_valid_way_when_milliseconds_are_used_and_running_via_console_for_array()
     {
         $config = Mockery::mock(Config::class);
@@ -218,7 +219,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_replaces_new_lines_in_query_by_spaces_when_config_set_to_true()
     {
         $config = Mockery::mock(Config::class);
@@ -269,7 +270,7 @@ EOT;
         $this->assertSame($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_replace_new_lines_in_query_when_config_set_to_false()
     {
         $config = Mockery::mock(Config::class);

@@ -8,10 +8,11 @@ use Mnabialek\LaravelSqlLogger\Config;
 use Mnabialek\LaravelSqlLogger\Providers\ServiceProvider;
 use Mnabialek\LaravelSqlLogger\SqlLogger;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 
 class ServiceProviderTest extends UnitTestCase
 {
-    /** @test */
+    #[Test]
     public function it_merges_config_and_publishes_when_nothing_should_be_logged()
     {
         $app = Mockery::mock(Container::class);
@@ -50,7 +51,7 @@ class ServiceProviderTest extends UnitTestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_starts_listening_to_queries_when_normal_queries_should_be_logged()
     {
         $app = Mockery::mock(Container::class);
@@ -95,7 +96,7 @@ class ServiceProviderTest extends UnitTestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_starts_listening_to_queries_when_slow_queries_should_be_logged()
     {
         $app = Mockery::mock(Container::class);
@@ -141,7 +142,7 @@ class ServiceProviderTest extends UnitTestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_valid_listening_closure()
     {
         $app = Mockery::mock(Container::class)->shouldIgnoreMissing(['make']);

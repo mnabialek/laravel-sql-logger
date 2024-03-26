@@ -8,6 +8,7 @@ use Mnabialek\LaravelSqlLogger\Query;
 use Mnabialek\LaravelSqlLogger\SqlLogger;
 use Mnabialek\LaravelSqlLogger\Writer;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 
 class SqlLoggerTest extends UnitTestCase
@@ -40,7 +41,7 @@ class SqlLoggerTest extends UnitTestCase
         $this->logger = new SqlLogger($this->app, $this->query, $this->writer);
     }
 
-    /** @test */
+    #[Test]
     public function it_runs_writer_with_valid_query()
     {
         $query = 'SELECT * FROM somewhere';
@@ -56,7 +57,7 @@ class SqlLoggerTest extends UnitTestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_valid_query_number_for_multiple_queries()
     {
         $query = 'SELECT * FROM somewhere';
@@ -82,7 +83,7 @@ class SqlLoggerTest extends UnitTestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_logs_thrown_exception_and_continue_working_for_next_query()
     {
         $query = 'SELECT * FROM somewhere';

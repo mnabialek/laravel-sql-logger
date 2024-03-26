@@ -10,6 +10,7 @@ use Mnabialek\LaravelSqlLogger\Formatter;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mnabialek\LaravelSqlLogger\Writer;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 
 class WriterTest extends UnitTestCase
 {
@@ -66,7 +67,7 @@ class WriterTest extends UnitTestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_directory_if_it_does_not_exist_for_1st_query()
     {
         $query = new SqlQuery(1, 'test', [], 5.41);
@@ -80,7 +81,7 @@ class WriterTest extends UnitTestCase
         $this->assertEmpty($this->filesystem->allFiles($this->directory));
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_create_directory_if_it_does_not_exist_for_2nd_query()
     {
         $query = new SqlQuery(2, 'test', [], 5.41);
@@ -93,7 +94,7 @@ class WriterTest extends UnitTestCase
         $this->assertFileDoesNotExist($this->directory);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_log_file()
     {
         $lineContent = 'Sample log line';
@@ -114,7 +115,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_appends_to_existing_log_file()
     {
         $expectedFileName = $this->now->toDateString() . '-log.sql';
@@ -139,7 +140,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($initialContent . $lineContent, file_get_contents($this->directory . '/' . $expectedFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_replaces_current_file_content_for_1st_query_when_overriding_is_turned_on()
     {
         $expectedFileName = $this->now->toDateString() . '-log.sql';
@@ -164,7 +165,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_appends_to_current_file_content_for_2nd_query_when_overriding_is_turned_on()
     {
         $expectedFileName = $this->now->toDateString() . '-log.sql';
@@ -189,7 +190,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($initialContent . $lineContent, file_get_contents($this->directory . '/' . $expectedFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_adds_query_to_slow_log_when_its_greater_than_given_time()
     {
         $lineContent = 'Sample slow log line';
@@ -210,7 +211,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_add_query_to_slow_log_when_its_lower_than_given_time()
     {
         $lineContent = 'Sample slow log line';
@@ -226,7 +227,7 @@ class WriterTest extends UnitTestCase
         $this->assertEmpty($this->filesystem->allFiles($this->directory));
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_2_files_when_both_log_set_to_true()
     {
         $lineContent = 'Sample log line';
@@ -254,7 +255,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedSlowFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_saves_select_query_to_file_when_pattern_set_to_select_queries()
     {
         $lineContent = 'Sample log line';
@@ -282,7 +283,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedSlowFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_doesnt_save_select_query_to_file_when_pattern_set_to_insert_or_update_queries()
     {
         $lineContent = 'Sample log line';
@@ -300,7 +301,7 @@ class WriterTest extends UnitTestCase
         $this->assertCount(0, $this->filesystem->allFiles($this->directory));
     }
 
-    /** @test */
+    #[Test]
     public function it_saves_insert_query_to_file_when_pattern_set_to_insert_or_update_queries()
     {
         $lineContent = 'Sample log line';
@@ -328,7 +329,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedSlowFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_raw_query_without_bindings_when_using_query_pattern()
     {
         $lineContent = 'Sample log line';
@@ -356,7 +357,7 @@ class WriterTest extends UnitTestCase
         $this->assertSame($lineContent, file_get_contents($this->directory . '/' . $expectedSlowFileName));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_different_patterns_for_log_and_slow_log_queries()
     {
         $lineContent = 'Sample log line';
