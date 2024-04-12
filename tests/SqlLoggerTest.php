@@ -3,6 +3,7 @@
 namespace Mnabialek\LaravelSqlLogger\Tests;
 
 use Illuminate\Container\Container;
+use Illuminate\Database\Events\QueryExecuted;
 use Mnabialek\LaravelSqlLogger\Objects\SqlQuery;
 use Mnabialek\LaravelSqlLogger\Query;
 use Mnabialek\LaravelSqlLogger\SqlLogger;
@@ -44,12 +45,16 @@ class SqlLoggerTest extends UnitTestCase
     #[Test]
     public function it_runs_writer_with_valid_query()
     {
-        $query = 'SELECT * FROM somewhere';
+        $sql = 'SELECT * FROM somewhere';
         $bindings = ['one', 2];
         $time = 5412;
+        $connection = Mockery::mock(stdClass::class);
+        $connection->shouldReceive('getName')->withNoArgs()->andReturn("db");
+        $query = new QueryExecuted($sql, $bindings, $time, $connection);
+        $connectionName = 'db';
 
-        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54);
-        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time)
+        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54, 'db');
+        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time, $connectionName)
             ->andReturn($sqlQuery);
         $this->writer->shouldReceive('save')->once()->with($sqlQuery);
 
@@ -60,21 +65,29 @@ class SqlLoggerTest extends UnitTestCase
     #[Test]
     public function it_uses_valid_query_number_for_multiple_queries()
     {
-        $query = 'SELECT * FROM somewhere';
+        $sql = 'SELECT * FROM somewhere';
         $bindings = ['one', 2];
         $time = 5412;
+        $connection = Mockery::mock(stdClass::class);
+        $connection->shouldReceive('getName')->withNoArgs()->andReturn("db");
+        $query = new QueryExecuted($sql, $bindings, $time, $connection);
+        $connectionName = 'db';
 
-        $query2 = 'SELECT * FROM world';
+        $sql2 = 'SELECT * FROM world';
         $bindings2 = ['three', 4];
         $time2 = 45.43;
+        $connection2 = Mockery::mock(stdClass::class);
+        $connection2->shouldReceive('getName')->withNoArgs()->andReturn("db");
+        $query2 = new QueryExecuted($sql2, $bindings2, $time2, $connection2);
+        $connectionName2 = 'db';
 
-        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54);
-        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time)
+        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54, 'db');
+        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time, $connectionName )
             ->andReturn($sqlQuery);
         $this->writer->shouldReceive('save')->once()->with($sqlQuery);
 
-        $sqlQuery2 = new SqlQuery(6, 'anything2', [], 41.23);
-        $this->query->shouldReceive('get')->once()->with(2, $query2, $bindings2, $time2)
+        $sqlQuery2 = new SqlQuery(6, 'anything2', [], 41.23, 'db');
+        $this->query->shouldReceive('get')->once()->with(2, $query2, $bindings2, $time2, $connectionName2)
             ->andReturn($sqlQuery2);
         $this->writer->shouldReceive('save')->once()->with($sqlQuery2);
 
@@ -86,18 +99,26 @@ class SqlLoggerTest extends UnitTestCase
     #[Test]
     public function it_logs_thrown_exception_and_continue_working_for_next_query()
     {
-        $query = 'SELECT * FROM somewhere';
+        $sql = 'SELECT * FROM somewhere';
         $bindings = ['one', 2];
         $time = 5412;
+        $connection = Mockery::mock(stdClass::class);
+        $connection->shouldReceive('getName')->withNoArgs()->andReturn("db");
+        $query = new QueryExecuted($sql, $bindings, $time, $connection);
+        $connectionName = 'db';
 
-        $query2 = 'SELECT * FROM world';
+        $sql2 = 'SELECT * FROM world';
         $bindings2 = ['three', 4];
         $time2 = 45.43;
+        $connection2 = Mockery::mock(stdClass::class);
+        $connection2->shouldReceive('getName')->withNoArgs()->andReturn("db");
+        $query2 = new QueryExecuted($sql2, $bindings2, $time2, $connection2);
+        $connectionName2 = 'db';
 
         $exception = new \Exception('Sample message');
 
-        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54);
-        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time)
+        $sqlQuery = new SqlQuery(4, 'anything', [], 3.54, 'db');
+        $this->query->shouldReceive('get')->once()->with(1, $query, $bindings, $time, $connectionName)
             ->andReturn($sqlQuery);
         $this->writer->shouldReceive('save')->once()->with($sqlQuery)->andThrow($exception);
 
@@ -105,8 +126,8 @@ class SqlLoggerTest extends UnitTestCase
         $this->app->shouldReceive('offsetGet')->once()->with('log')->andReturn($log);
         $log->shouldReceive('notice')->once()->with("Cannot log query nr 1. Exception:\n" . $exception);
 
-        $sqlQuery2 = new SqlQuery(6, 'anything2', [], 41.23);
-        $this->query->shouldReceive('get')->once()->with(2, $query2, $bindings2, $time2)
+        $sqlQuery2 = new SqlQuery(6, 'anything2', [], 41.23, 'db');
+        $this->query->shouldReceive('get')->once()->with(2, $query2, $bindings2, $time2, $connectionName2)
             ->andReturn($sqlQuery2);
         $this->writer->shouldReceive('save')->once()->with($sqlQuery2);
 

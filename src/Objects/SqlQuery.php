@@ -19,6 +19,11 @@ class SqlQuery
     private $sql;
 
     /**
+     * @var string
+     */
+    private $connection;
+
+    /**
      * @var array
      */
     private $bindings;
@@ -35,13 +40,15 @@ class SqlQuery
      * @param string $sql
      * @param array|null $bindings
      * @param float $time
+     * @param string $connection
      */
-    public function __construct($number, $sql, array $bindings = null, $time)
+    public function __construct($number, $sql, array $bindings = null, $time, $connection)
     {
         $this->number = $number;
         $this->sql = $sql;
         $this->bindings = $bindings ?: [];
         $this->time = $time;
+        $this->connection = $connection;
     }
 
     /**
@@ -62,6 +69,16 @@ class SqlQuery
     public function raw()
     {
         return $this->sql;
+    }
+
+    /**
+     * Get Connection Config
+     *
+     * @return string
+     */
+    public function connection()
+    {
+        return $this->connection;
     }
 
     /**
