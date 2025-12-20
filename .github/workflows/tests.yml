@@ -1,7 +1,7 @@
 name: Tests
 
 # PHPUnit is removed from composer.json and managed by Testbench automatically
-# COMPOSER_AUDIT=0 disables security audits for testing old Laravel versions
+# Using Composer 2.2 to avoid security audit blocking (feature added in 2.4+)
 # --with-all-dependencies allows downgrading dependencies as needed
 
 on:
@@ -152,6 +152,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
+          tools: composer:2.2
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -177,8 +178,8 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" \
             "orchestra/testbench:${{ matrix.testbench }}" \
-            --dev --no-interaction --no-update --no-audit
-          COMPOSER_AUDIT=0 composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
+            --dev --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
 
       - name: Add PHPUnit problem matcher
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
