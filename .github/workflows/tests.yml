@@ -1,5 +1,8 @@
 name: Tests
 
+# Testbench manages PHPUnit versions automatically
+# Using COMPOSER_AUDIT_DISABLED=1 to bypass security advisories for old Laravel versions in CI
+
 on:
   push:
     branches:
@@ -62,7 +65,7 @@ jobs:
         stability: [prefer-stable]
 
         include:
-          # Laravel to Testbench version mapping
+          # Laravel to Testbench version mapping (Testbench will manage PHPUnit version)
           - laravel: 11.*
             testbench: ^9.0
           - laravel: 10.*
@@ -77,22 +80,6 @@ jobs:
             testbench: ^4.0
           - laravel: 5.8.*
             testbench: ^3.8
-
-          # PHP to PHPUnit version mapping
-          - php: '7.2'
-            phpunit: ^8.5
-          - php: '7.3'
-            phpunit: ^9.0
-          - php: '7.4'
-            phpunit: ^9.0
-          - php: '8.0'
-            phpunit: ^9.5
-          - php: '8.1'
-            phpunit: ^10.0
-          - php: '8.2'
-            phpunit: ^11.0
-          - php: '8.3'
-            phpunit: ^11.0
 
         exclude:
           # Laravel 11.x requires PHP 8.2+ (excluding incompatible PHP < 8.2)
@@ -183,12 +170,13 @@ jobs:
         run: rm -f composer.lock
 
       - name: Install dependencies
+        env:
+          COMPOSER_AUDIT_DISABLED: 1
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" \
             "orchestra/testbench:${{ matrix.testbench }}" \
-            "phpunit/phpunit:${{ matrix.phpunit }}" \
-            --dev --no-interaction --no-update --no-audit
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-audit
+            --dev --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Add PHPUnit problem matcher
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
