@@ -50,7 +50,7 @@ jobs:
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
 
   test:
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: Laravel ${{ matrix.laravel }} - PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -178,6 +178,9 @@ jobs:
             ${{ runner.os }}-composer-php${{ matrix.php }}-laravel${{ matrix.laravel }}-
             ${{ runner.os }}-composer-php${{ matrix.php }}-
             ${{ runner.os }}-composer-
+
+      - name: Remove composer.lock
+        run: rm -f composer.lock
 
       - name: Install dependencies
         run: |
