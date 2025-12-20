@@ -13,6 +13,7 @@ on:
       - '**.php'
       - 'composer.json'
       - 'phpunit.xml'
+      - 'phpstan.neon'
       - '.github/workflows/tests.yml'
   pull_request:
     branches:
@@ -22,6 +23,7 @@ on:
       - '**.php'
       - 'composer.json'
       - 'phpunit.xml'
+      - 'phpstan.neon'
       - '.github/workflows/tests.yml'
   schedule:
     - cron: '0 0 * * 1'
@@ -52,6 +54,27 @@ jobs:
 
       - name: Check code style
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=1G
 
   test:
     name: Laravel ${{ matrix.laravel }} - PHP ${{ matrix.php }}

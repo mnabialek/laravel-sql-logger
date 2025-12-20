@@ -1,0 +1,11 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: laravel-sql-logger
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    command: tail -f /dev/null

@@ -4,7 +4,6 @@
 [![Support via Paypal](https://img.shields.io/badge/support%20via-paypal-brightgreen.svg)](https://www.paypal.me/mnabialek/5usd)
 [![Tests](https://github.com/mnabialek/laravel-sql-logger/workflows/Tests/badge.svg)](https://github.com/mnabialek/laravel-sql-logger/actions)
 [![Coverage Status](https://coveralls.io/repos/github/mnabialek/laravel-sql-logger/badge.svg)](https://coveralls.io/github/mnabialek/laravel-sql-logger)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mnabialek/laravel-sql-logger/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mnabialek/laravel-sql-logger/)
 
 
 This module allows you to log SQL queries (and slow SQL queries) to log file in Laravel/Lumen framework. It's useful mainly

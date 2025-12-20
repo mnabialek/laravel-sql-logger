@@ -1,0 +1,11 @@
+parameters:
+    level: 1
+    phpVersion: 80300
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/Fixtures/*
+    ignoreErrors:
+        # Allow dynamic properties in tests using Mockery
+    tmpDir: build/phpstan
