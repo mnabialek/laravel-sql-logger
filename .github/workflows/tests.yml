@@ -194,8 +194,10 @@ jobs:
       - name: Remove composer.lock
         run: rm -f composer.lock
 
-      - name: Remove PHPUnit requirement from composer.json
-        run: composer remove phpunit/phpunit --dev --no-update --no-interaction
+      - name: Remove PHPUnit and PHPStan requirements from composer.json
+        run: |
+          composer remove phpunit/phpunit --dev --no-update --no-interaction
+          composer remove phpstan/phpstan --dev --no-update --no-interaction
 
       - name: Install dependencies
         run: |

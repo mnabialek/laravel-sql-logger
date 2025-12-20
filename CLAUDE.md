@@ -8,37 +8,66 @@ Laravel SQL Logger is a development-only package that logs SQL queries (includin
 
 ## Commands
 
-### Testing
+All commands should be run using `make` to ensure consistent environment across all developers. The project uses Docker for development.
+
+### Getting Started
 ```bash
-# Run all tests
-vendor/bin/phpunit
+# Show all available make commands
+make help
 
-# Run tests with coverage report
-vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
-# Run a single test file
-vendor/bin/phpunit tests/SqlLoggerTest.php
-
-# Run a specific test method
-vendor/bin/phpunit --filter testMethodName
+# Initial setup - build container and install dependencies
+make setup
 ```
 
-### Code Quality
+### Docker Management
 ```bash
-# Run PHP CS Fixer to check code style
-vendor/bin/php-cs-fixer fix --dry-run --diff
+# Start the Docker container
+make up
 
-# Fix code style issues automatically
-vendor/bin/php-cs-fixer fix
+# Stop the Docker container
+make down
+
+# Access container shell
+make shell
+
+# Remove container and volumes
+make clean
 ```
 
 ### Development Setup
 ```bash
 # Install dependencies
-composer install
+make composer install
 
 # Update dependencies
-composer update
+make composer update
+
+# Run any composer command
+make composer [command]
+```
+
+### Testing
+```bash
+# Run all tests
+make test
+
+# Run tests with HTML coverage report
+make test-coverage
+
+# Run tests with text coverage output
+make test-coverage-text
+```
+
+### Code Quality
+```bash
+# Check code style with PHP CS Fixer
+make cs-check
+
+# Fix code style issues automatically
+make cs-fix
+
+# Run PHPStan static analysis
+make phpstan
 ```
 
 ## Architecture
