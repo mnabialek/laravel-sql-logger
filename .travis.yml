@@ -1,3 +1,6 @@
+# DEPRECATED: This package now uses GitHub Actions for CI
+# See .github/workflows/tests.yml
+
 language: php
 php:
   - 7.2
