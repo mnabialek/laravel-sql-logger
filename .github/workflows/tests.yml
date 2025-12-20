@@ -1,8 +1,8 @@
 name: Tests
 
-# Testbench manages PHPUnit versions automatically
-# Composer config disables security audits for testing old Laravel versions
-# --with-all-dependencies allows downgrading PHPUnit from composer.json requirement
+# PHPUnit is removed from composer.json and managed by Testbench automatically
+# COMPOSER_AUDIT=0 disables security audits for testing old Laravel versions
+# --with-all-dependencies allows downgrading dependencies as needed
 
 on:
   push:
@@ -170,17 +170,15 @@ jobs:
       - name: Remove composer.lock
         run: rm -f composer.lock
 
-      - name: Configure Composer to ignore security audits
-        run: |
-          composer config --no-plugins audit.abandoned ignore
-          composer config --no-plugins allow-plugins.php-http/discovery false
+      - name: Remove PHPUnit requirement from composer.json
+        run: composer remove phpunit/phpunit --dev --no-update --no-interaction
 
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" \
             "orchestra/testbench:${{ matrix.testbench }}" \
             --dev --no-interaction --no-update --no-audit
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-audit --with-all-dependencies
+          COMPOSER_AUDIT=0 composer update --${{ matrix.stability }} --prefer-dist --no-interaction --with-all-dependencies
 
       - name: Add PHPUnit problem matcher
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
