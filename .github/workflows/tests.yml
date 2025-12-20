@@ -64,19 +64,19 @@ jobs:
         include:
           # Laravel to Testbench version mapping
           - laravel: 11.*
-            testbench: ^10.0
-          - laravel: 10.*
             testbench: ^9.0
-          - laravel: 9.*
+          - laravel: 10.*
             testbench: ^8.0
-          - laravel: 8.*
+          - laravel: 9.*
             testbench: ^7.0
-          - laravel: 7.*
+          - laravel: 8.*
             testbench: ^6.0
-          - laravel: 6.*
+          - laravel: 7.*
             testbench: ^5.0
-          - laravel: 5.8.*
+          - laravel: 6.*
             testbench: ^4.0
+          - laravel: 5.8.*
+            testbench: ^3.8
 
           # PHP to PHPUnit version mapping
           - php: '7.2'
@@ -184,8 +184,8 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" \
             "orchestra/testbench:${{ matrix.testbench }}" \
             "phpunit/phpunit:${{ matrix.phpunit }}" \
-            --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+            --dev --no-interaction --no-update --no-audit
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-audit
 
       - name: Add PHPUnit problem matcher
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
