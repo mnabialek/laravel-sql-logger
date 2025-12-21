@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Laravel SQL Logger is a development-only package that logs SQL queries (including slow queries) to log files for Laravel/Lumen applications. It supports Laravel 5.x through 11.x.
+Laravel SQL Logger is a development-only package that logs SQL queries (including slow queries) to log files for Laravel/Lumen applications. It supports Laravel 5.x through 12.x.
 
 ## Commands
 
@@ -106,7 +106,7 @@ The `Config` class wraps access to the `config/sql_logger.php` configuration fil
 
 The package uses `mnabialek/laravel-version` to detect Laravel version at runtime. This enables:
 - Supporting both old event signature (Laravel < 5.2) and QueryExecuted objects (5.2+)
-- Maintaining compatibility across Laravel 5.x through 11.x
+- Maintaining compatibility across Laravel 5.x through 12.x
 
 ## Code Style
 

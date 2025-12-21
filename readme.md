@@ -8,6 +8,12 @@
 This module allows you to log SQL queries (and slow SQL queries) to log file in Laravel/Lumen framework. It's useful mainly
 when developing your application to verify whether your queries are valid and to make sure your application doesn't run too many or too slow database queries.
 
+### Requirements
+
+- Laravel 5.8 - 12.x
+- Lumen 5.8 - 11.x (Lumen development discontinued after version 11)
+- PHP 7.4 - 8.5
+
 ### Installation
 
 1. Run
