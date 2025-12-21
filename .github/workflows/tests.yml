@@ -49,6 +49,10 @@ jobs:
           php-version: 7.0
           coverage: none
 
+      - name: Remove incompatible dev dependencies
+        run: |
+          composer remove phpunit/phpunit phpstan/phpstan laravel/framework --dev --no-update --no-interaction
+
       - name: Install dependencies
         run: composer update --prefer-stable --prefer-dist --no-interaction
 
