@@ -36,9 +36,11 @@ class FormatterTest extends UnitTestCase
         $number = 434;
         $time = 617.24;
         $sql = 'SELECT * FROM somewhere';
+        $connection = 'db';
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -77,9 +79,11 @@ EOT;
         $number = 434;
         $time = 617.24;
         $sql = 'SELECT * FROM somewhere';
+        $connection = 'db';
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -119,9 +123,11 @@ EOT;
         $number = 434;
         $time = 617.24;
         $sql = 'SELECT * FROM somewhere';
+        $connection = 'db';
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -158,9 +164,11 @@ EOT;
         $number = 434;
         $time = 617.24;
         $sql = 'SELECT * FROM somewhere';
+        $connection = 'db';
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -201,9 +209,11 @@ EOT;
         $number = 434;
         $time = 617.24;
         $sql = 'SELECT * FROM somewhere';
+        $connection = 'db';
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -251,10 +261,12 @@ SQL;
 SELECT * FROM  somewhere WHERE name = '
 '
 SQL;
+        $connection = 'db';
 
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
@@ -303,10 +315,12 @@ SELECT * FROM
 somewhere WHERE name = '
 '
 SQL;
+        $connection = 'db';
 
         $query->shouldReceive('number')->once()->withNoArgs()->andReturn($number);
         $query->shouldReceive('get')->once()->withNoArgs()->andReturn($sql);
         $query->shouldReceive('time')->once()->withNoArgs()->andReturn($time);
+        $query->shouldReceive('connection')->once()->withNoArgs()->andReturn($connection);
 
         $formatter = new Formatter($app, $config);
         $result = $formatter->getLine($query);
