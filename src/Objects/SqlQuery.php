@@ -29,19 +29,26 @@ class SqlQuery
     private $time;
 
     /**
+     * @var string|null
+     */
+    private $caller;
+
+    /**
      * SqlQuery constructor.
      *
      * @param int $number
      * @param string $sql
      * @param array|null $bindings
      * @param float $time
+     * @param string|null $caller
      */
-    public function __construct($number, $sql, array $bindings = null, $time)
+    public function __construct($number, $sql, $time, $bindings = null, $caller = null)
     {
         $this->number = $number;
         $this->sql = $sql;
         $this->bindings = $bindings ?: [];
         $this->time = $time;
+        $this->caller = $caller;
     }
 
     /**
@@ -83,6 +90,17 @@ class SqlQuery
     {
         return $this->time;
     }
+
+    /**
+     * Callsite (file:line Class::method) oder null/leer.
+     *
+     * @return string|null
+     */
+    public function caller()
+    {
+        return $this->caller;
+    }
+
 
     /**
      * Get full query with values from bindings inserted.

@@ -49,6 +49,7 @@ class Formatter
             '[query_time]' => $this->time($query->time()),
             '[query]' => $this->queryLine($query),
             '[separator]' => $this->separatorLine(),
+            '[caller]' => (string) ($query->caller() ?: ''),
             '\n' => PHP_EOL,
         ];
 

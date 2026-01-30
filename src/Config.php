@@ -160,4 +160,39 @@ class Config
     {
         return $this->repository->get('sql_logger.formatting.entry_format');
     }
+
+    /**
+     * Whether callsite collection is enabled.
+     *
+     * @return bool
+     */
+    public function callsiteEnabled()
+    {
+        return (bool) $this->repository->get('sql_logger.callsite.enabled', false);
+    }
+
+    /**
+     * Max backtrace depth when collecting callsite.
+     *
+     * @return int
+     */
+    public function callsiteMaxDepth()
+    {
+        return (int) $this->repository->get('sql_logger.callsite.max_depth', 50);
+    }
+
+    /**
+     * Whether we need to collect callsite (either enabled or format uses token).
+     *
+     * @return bool
+     */
+    public function needsCallsite()
+    {
+        if ($this->callsiteEnabled()) {
+            return true;
+        }
+
+        $fmt = (string) $this->entryFormat();
+        return strpos($fmt, '[caller]') !== false;
+    }
 }

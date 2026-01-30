@@ -90,8 +90,23 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getListenClosure(SqlLogger $logger)
     {
-        return function ($query, $bindings = null, $time = null) use ($logger) {
-            $logger->log($query, $bindings, $time);
+        $needsCallsite = $this->config->needsCallsite();
+        $maxDepth = $this->config->callsiteMaxDepth();
+
+        // Resolver nur einmal erzeugen, nicht pro Query
+        $resolver = $needsCallsite
+            ? new \Mnabialek\LaravelSqlLogger\CallerResolver(base_path())
+            : null;
+
+        return function ($query, $bindings = null, $time = null) use ($logger, $needsCallsite, $maxDepth, $resolver) {
+            $caller = null;
+
+            if ($needsCallsite) {
+                $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $maxDepth);
+                $caller = $resolver ? $resolver->resolve($trace) : null;
+            }
+
+            $logger->log($query, $bindings, $time, $caller);
         };
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "mnabialek/laravel-sql-logger",
+    "name": "TimoFrenzel/laravel-sql-logger",
     "description": "Log SQL queries in Laravel/Lumen framework",
     "keywords": ["laravel", "sql", "log", "logger", "lumen", "sql logger", "log sql queries", "log sql", "sql log"],
     "license": "MIT",

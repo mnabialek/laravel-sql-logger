@@ -27,10 +27,11 @@ class Query
      * @param string|\Illuminate\Database\Events\QueryExecuted $query
      * @param array|null $bindings
      * @param float|null $time
+     * @param string|null $caller
      *
      * @return SqlQuery
      */
-    public function get($number, $query, array $bindings = null, $time = null)
+    public function get($number, $query, $bindings = null, $time = null, $caller = null)
     {
         // for Laravel/Lumen 5.2+ $query is object and it holds all the data
         if ($this->version->min('5.2.0')) {
@@ -39,6 +40,6 @@ class Query
             $query = $query->sql;
         }
 
-        return new SqlQuery($number, $query, $bindings, $time);
+        return new SqlQuery($number, $query, $time, $bindings, $caller);
     }
 }

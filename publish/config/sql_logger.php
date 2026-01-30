@@ -97,4 +97,17 @@ return [
          */
         'file_name' => env('SQL_LOGGER_SLOW_QUERIES_FILE_NAME', '[Y-m-d]-slow-log'),
     ],
+
+    'callsite' => [
+        /*
+         * If true, callsite (file:line Class::method) will be collected even if entry_format
+         * doesn't contain [caller]. NOTE: backtrace has a performance cost.
+         */
+        'enabled' => env('SQL_LOGGER_CALLSITE_ENABLED', false),
+
+        /*
+         * Max frames to inspect in debug_backtrace()
+         */
+        'max_depth' => env('SQL_LOGGER_CALLSITE_MAX_DEPTH', 50),
+    ],
 ];
