@@ -10,7 +10,7 @@ when developing your application to verify whether your queries are valid and to
 
 ### Requirements
 
-- Laravel 5.8 - 12.x
+- Laravel 5.8 - 13.x
 - Lumen 5.8 - 11.x (Lumen development discontinued after version 11)
 - PHP 7.4 - 8.5
 
